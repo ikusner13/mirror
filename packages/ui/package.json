@@ -17,6 +17,8 @@
     "tslib": "^2.6.0",
     "typescript": "^5.1.6",
     "tsconfig": "workspace:*",
-    "vite": "^4.4.7"
+    "vite": "^4.4.7",
+    "eslint-plugin-svelte": "^2.32.4",
+    "eslint-config-custom": "workspace:*"
   }
 }

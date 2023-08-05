@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "main": "index.js",
-  "publishConfig": {
-    "access": "public"
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1"
   }
 }
