@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "dev": "nodemon --exec ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,8 @@
     "typescript": "^5.1.6",
     "ws": "^8.13.0",
     "@types/ws": "^8.5.5",
-    "@types/node": "^18.16.18"
+    "@types/node": "^18.16.18",
+    "ts-node": "^10.9.1",
+    "nodemon": "^3.0.1"
   }
 }
