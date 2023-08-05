@@ -4,13 +4,8 @@
   "globalEnv": ["PORT"],
   "pipeline": {
     "build": {
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],
-      "dependsOn": ["^build"],
-      "env": ["NEXT_PUBLIC_API_HOST"]
-    },
-    "test": {
-      "outputs": ["coverage/**"],
-      "dependsOn": []
+      "outputs": ["dist/**", "public/dist/**"],
+      "dependsOn": ["^build"]
     },
     "lint": {
       "dependsOn": ["^build"]
