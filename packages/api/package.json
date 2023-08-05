@@ -7,20 +7,18 @@
     "clean": "rm -rf dist",
     "dev": "nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
-    "start": "node -r esbuild-register ./src/index.ts",
-    "test": "jest --detectOpenHandles"
+    "start": "node -r esbuild-register ./src/index.ts"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
     "logger": "workspace:*",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "socket-server": "workspace:*"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.13",
-    "@types/express": "^4.17.12",
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.16.18",
     "esbuild": "^0.18.17",
