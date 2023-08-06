@@ -35,3 +35,27 @@ export const bedtimeJob = (task: () => void) => {
     "America/New_York",
   );
 };
+
+export const morningAndBedtimeJob = ({
+  bedtimeTask,
+  morningTask,
+}: {
+  bedtimeTask: () => void;
+  morningTask: () => void;
+}) => {
+  return new CronJob(
+    "30 5,20 * * *",
+    function () {
+      const currentHour = new Date().getHours();
+
+      if (currentHour === 5) {
+        morningTask();
+      } else if (currentHour === 20) {
+        bedtimeTask();
+      }
+    },
+    null,
+    false,
+    "America/Los_Angeles",
+  );
+};

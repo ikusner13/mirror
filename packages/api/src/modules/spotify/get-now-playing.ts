@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { type CurrentlyPlayingObject, type TrackObject } from "./spotify.api";
+import { type CurrentlyPlayingObject } from "./spotify.api";
 
 const config = {
   accessToken:
@@ -77,7 +77,15 @@ async function refreshAccessToken() {
   return null;
 }
 
-async function getMyPlayingTrack() {
+type GetMyPlayingTrackResponse = {
+  is_playing: boolean;
+  item?: {
+    artistName: string;
+    songName: string;
+  };
+};
+
+export async function getMyPlayingTrack() {
   if (!config.accessToken) {
     await refreshAccessToken();
   }
@@ -101,13 +109,34 @@ async function getMyPlayingTrack() {
   }
 
   // if track is playing, return track
-  return nowPlayingData.item as TrackObject;
+  const item = nowPlayingData.item;
+  return item as GetMyPlayingTrackResponse;
 }
 
-getMyPlayingTrack()
+const timeoutTime = 5000; // 5 seconds
+
+export function getTrackLoop(
+  onSuccessCB: (track: GetMyPlayingTrackResponse) => void,
+) {
+  getMyPlayingTrack()
+    .then((track) => {
+      if (track) {
+        onSuccessCB(track);
+      }
+    })
+    .catch((error) => {
+      console.error("Error in getTrackLoop:", error);
+      // You might want to retry after an error:
+    })
+    .finally(() => {
+      setTimeout(() => getTrackLoop(onSuccessCB), timeoutTime);
+    });
+}
+
+/*getMyPlayingTrack()
   .then((track) => {
     console.log("track", track);
   })
   .catch((error) => {
     console.error(error);
-  });
+  });*/

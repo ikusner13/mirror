@@ -2,7 +2,7 @@ import { type Auth, google } from "googleapis";
 
 import { loadSavedCredentialsIfExist } from "../../google-auth";
 
-export async function listEvents() {
+async function listEvents() {
   const auth =
     (await loadSavedCredentialsIfExist()) as Auth.OAuth2Client | null;
 
@@ -38,11 +38,16 @@ export async function listEvents() {
       summary: event.summary,
     };
   });
-
-  // events.map((event) => {
-  //   const start = event.start?.dateTime || event.start?.date;
-  //   console.log(`${start} - ${event.summary}`);
-  // });
 }
 
-listEvents().catch(console.error);
+export function getEvents(cb: (events: any[]) => void) {
+  listEvents()
+    .then((events) => {
+      cb(events);
+    })
+    .catch((err) => {
+      console.error("err", err);
+    });
+}
+
+//listEvents().catch(console.error);

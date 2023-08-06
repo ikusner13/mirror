@@ -24,7 +24,7 @@ type PhotoResponse = {
 const albumId =
   "AKcvZRwngYxfEg0WthniYt7tZG4BW3m5JKYYQGWUu7XNlFmTDcgqGqeK36lh1fF_AuOUTk01MAjc"; // Replace with your album ID
 
-async function getPhotos() {
+export async function getPhotos() {
   const tokens = await getTokens();
 
   if (!tokens?.token) {
@@ -81,7 +81,19 @@ async function getPhotos() {
   return allMediaItems.map((item) => item.baseUrl);
 }
 
-getPhotos()
+export function getPhoto(cb: (photo: string) => void) {
+  getPhotos()
+    .then((photos) => {
+      const randomPhoto = getRandomPhoto(photos);
+
+      cb(randomPhoto);
+    })
+    .catch((err) => {
+      console.error("err", err);
+    });
+}
+
+/*getPhotos()
   .then((photos) => {
     const randomPhoto = getRandomPhoto(photos);
 
@@ -89,4 +101,4 @@ getPhotos()
   })
   .catch((err) => {
     console.error("err", err);
-  });
+  });*/
