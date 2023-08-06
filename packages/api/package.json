@@ -9,9 +9,11 @@
     "calendar-events": "ts-node ./src/modules/google-calendar/get-calendar-events.ts",
     "clean": "rm -rf dist",
     "dev": "nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
+    "generate-message": "ts-node ./src/modules/message/generate-message.ts",
     "getPhotos": "ts-node ./src/modules/google-photos/fetch-photos.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
     "photos": "ts-node ./src/modules/google-photos/fetch-photos.ts",
+    "spotify": "ts-node ./src/modules/spotify/get-now-playing.ts",
     "start": "node -r esbuild-register ./src/index.ts",
     "weather": "ts-node ./src/modules/weather/get-weather.ts"
   },
@@ -22,6 +24,7 @@
     "cron": "^2.4.0",
     "googleapis": "^123.0.0",
     "morgan": "^1.10.0",
+    "openai": "^3.3.0",
     "ws": "^8.13.0"
   },
   "devDependencies": {
