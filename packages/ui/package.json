@@ -1,24 +1,23 @@
 {
   "name": "ui",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.3",
     "@tsconfig/svelte": "^5.0.0",
+    "eslint-config-mirror": "workspace:*",
+    "eslint-plugin-svelte": "^2.32.4",
     "svelte": "^4.1.1",
     "svelte-check": "^3.4.6",
+    "tsconfig": "workspace:*",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6",
-    "tsconfig": "workspace:*",
-    "vite": "^4.4.7",
-    "eslint-plugin-svelte": "^2.32.4",
-    "eslint-config-custom": "workspace:*"
+    "vite": "^4.4.7"
   }
 }

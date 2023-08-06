@@ -1,17 +1,18 @@
+import { type Server as HTTPServer } from "http";
 import { WebSocketServer } from "ws";
-import { Server as HTTPServer } from "http";
+
 import {
-  everyXSecondsJob,
   everyXMinutesJob,
+  everyXSecondsJob,
   topOfTheHourJob,
-} from "./schedules";
+} from "./scheduler";
 
 export function createWebsocketServer(
   server: HTTPServer,
   {
-    onConnectionCb,
     onCloseCb,
-  }: { onConnectionCb?: () => void; onCloseCb?: () => void },
+    onConnectionCb,
+  }: { onCloseCb?: () => void; onConnectionCb?: () => void },
 ) {
   const wss = new WebSocketServer({ server });
 
