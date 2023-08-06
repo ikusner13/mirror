@@ -1,3 +1,4 @@
 module.exports = {
-  extends: ["mirror/node"],
+  root: true,
+  extends: ["mirror/base", "mirror/node"],
 };

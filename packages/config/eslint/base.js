@@ -5,6 +5,7 @@ const config = {
     node: true,
   },
   extends: [
+    "turbo",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -12,7 +13,12 @@ const config = {
     "plugin:perfectionist/recommended-natural",
     "prettier",
   ],
-  ignorePatterns: ["node_modules", "dist", "pnpm-lock.yaml"],
+  ignorePatterns: [
+    "**/.eslintrc.cjs",
+    "packages/config/**",
+    "dist",
+    "pnpm-lock.yaml",
+  ],
   overrides: [
     {
       files: ["**/*.cjs"],
@@ -22,6 +28,9 @@ const config = {
     },
   ],
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: true,
+  },
   plugins: ["@typescript-eslint"],
   rules: {
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],

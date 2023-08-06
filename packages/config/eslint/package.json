@@ -4,20 +4,21 @@
   "private": true,
   "files": [
     "./base.js",
-    "./svelte.js"
+    "./svelte.js",
+    "./node.js"
   ],
   "scripts": {
     "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
     "lint:fix": "pnpm run lint --fix"
   },
   "devDependencies": {
-    "tsconfig": "workspace:^",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-turbo": "^1.10.12",
-    "eslint-plugin-svelte": "^2.32.4",
     "eslint-plugin-n": "^16.0.1",
-    "eslint-plugin-perfectionist": "^1.5.1"
+    "eslint-plugin-perfectionist": "^1.5.1",
+    "eslint-plugin-svelte": "^2.32.4",
+    "tsconfig": "workspace:^"
   }
 }
