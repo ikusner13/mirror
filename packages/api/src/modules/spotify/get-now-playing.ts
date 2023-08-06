@@ -132,11 +132,3 @@ export function getTrackLoop(
       setTimeout(() => getTrackLoop(onSuccessCB), timeoutTime);
     });
 }
-
-/*getMyPlayingTrack()
-  .then((track) => {
-    console.log("track", track);
-  })
-  .catch((error) => {
-    console.error(error);
-  });*/

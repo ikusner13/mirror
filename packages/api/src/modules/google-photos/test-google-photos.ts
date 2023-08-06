@@ -1,5 +1,9 @@
 import { getPhoto } from "./fetch-photos";
 
-getPhoto((photo) => {
-  console.log("photo", photo);
-});
+getPhoto()
+  .then((photo) => {
+    console.log(photo);
+  })
+  .catch((error) => {
+    console.error(error);
+  });

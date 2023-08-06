@@ -1,3 +1,9 @@
 import { getWeather } from "./get-weather";
 
-getWeather((data) => console.log("data", data));
+getWeather()
+  .then((weather) => {
+    console.log(weather);
+  })
+  .catch((error) => {
+    console.error(error);
+  });

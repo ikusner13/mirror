@@ -1,5 +1,5 @@
 import { type Server as HTTPServer } from "http";
-import { type WebSocket, WebSocketServer } from "ws";
+import { WebSocketServer } from "ws";
 
 export function createWebsocketServer(
   server: HTTPServer,
@@ -31,14 +31,30 @@ export function createWebsocketServer(
     });
   };
 
-  const serveClients = (cb: (ws: WebSocket) => void) => {
-    wss.clients.forEach((client) => {
-      cb(client);
-    });
+  const sendEvent = async (
+    event: string,
+    data: () => Promise<any> | string,
+  ) => {
+    if (typeof data === "string") {
+      wss.clients.forEach((client) => {
+        client.send(JSON.stringify({ data, event }));
+      });
+      return;
+    }
+
+    try {
+      const dataToSend = await data();
+
+      wss.clients.forEach((client) => {
+        client.send(JSON.stringify({ data: dataToSend, event }));
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return {
-    serveClients,
+    sendEvent,
     shutdown,
     wss,
   };

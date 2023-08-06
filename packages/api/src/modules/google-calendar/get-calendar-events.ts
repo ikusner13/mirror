@@ -40,14 +40,10 @@ async function listEvents() {
   });
 }
 
-export function getEvents(cb: (events: any[]) => void) {
-  listEvents()
-    .then((events) => {
-      cb(events);
-    })
-    .catch((err) => {
-      console.error("err", err);
-    });
+export async function getEvents() {
+  const events = await listEvents();
+
+  return events;
 }
 
 //listEvents().catch(console.error);

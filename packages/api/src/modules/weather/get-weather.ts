@@ -72,12 +72,8 @@ async function fetchWeatherDetails() {
   return data;
 }
 
-export function getWeather(cb: (data: WeatherResponse) => void) {
-  fetchWeatherDetails()
-    .then((data) => {
-      cb(data);
-    })
-    .catch((err) => {
-      console.error("err", err);
-    });
+export async function getWeather() {
+  const weather = await fetchWeatherDetails();
+
+  return weather;
 }

@@ -81,16 +81,10 @@ export async function getPhotos() {
   return allMediaItems.map((item) => item.baseUrl);
 }
 
-export function getPhoto(cb: (photo: string) => void) {
-  getPhotos()
-    .then((photos) => {
-      const randomPhoto = getRandomPhoto(photos);
+export async function getPhoto() {
+  const photos = await getPhotos();
 
-      cb(randomPhoto);
-    })
-    .catch((err) => {
-      console.error("err", err);
-    });
+  return getRandomPhoto(photos);
 }
 
 /*getPhotos()
