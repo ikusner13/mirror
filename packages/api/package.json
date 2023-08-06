@@ -3,14 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "albumIds": "ts-node ./src/modules/google-calendar/fetch-album-ids.ts",
+    "albumIds": "ts-node ./src/modules/google-photos/fetch-album-ids.ts",
     "authorize": "ts-node ./src/modules/google-calendar/authorize.ts",
     "build": "tsc",
+    "calendar-events": "ts-node ./src/modules/google-calendar/get-calendar-events.ts",
     "clean": "rm -rf dist",
     "dev": "nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
-    "getPhotos": "ts-node ./src/modules/google-calendar/fetch-photos.ts",
+    "getPhotos": "ts-node ./src/modules/google-photos/fetch-photos.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
-    "start": "node -r esbuild-register ./src/index.ts"
+    "photos": "ts-node ./src/modules/google-photos/fetch-photos.ts",
+    "start": "node -r esbuild-register ./src/index.ts",
+    "weather": "ts-node ./src/modules/weather/get-weather.ts"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.1",
@@ -32,6 +35,7 @@
     "eslint": "^8.46.0",
     "eslint-config-mirror": "workspace:*",
     "nodemon": "^3.0.1",
+    "oazapfts": "^4.7.4",
     "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.6"

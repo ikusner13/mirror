@@ -78,19 +78,25 @@ async function listEvents(auth: Auth.OAuth2Client) {
     maxResults: 10,
     orderBy: "startTime",
     singleEvents: true,
+    timeMax: new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      0,
+    ).toISOString(),
     timeMin: new Date().toISOString(),
   });
   const events = res.data.items;
+
   if (!events || events.length === 0) {
-    console.log("No upcoming events found.");
-    return;
+    return [];
   }
 
-  console.log("Upcoming 10 events:");
-  events.map((event) => {
-    const start = event.start?.dateTime || event.start?.date;
-    console.log(`${start} - ${event.summary}`);
-  });
+  return events;
+
+  // events.map((event) => {
+  //   const start = event.start?.dateTime || event.start?.date;
+  //   console.log(`${start} - ${event.summary}`);
+  // });
 }
 
 authorize().then(listEvents).catch(console.error);
