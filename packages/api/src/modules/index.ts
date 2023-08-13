@@ -1,6 +1,4 @@
-import { getEvents } from "./google-calendar";
-import { getPhoto } from "./google-photos";
-import { getTrackLoop } from "./spotify";
-import { getWeather } from "./weather";
-
-export { getEvents, getPhoto, getTrackLoop, getWeather };
+export * from "./google-calendar";
+export * from "./google-photos";
+export * from "./spotify";
+export * from "./weather";

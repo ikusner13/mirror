@@ -1,3 +1,1 @@
-import { getEvents } from "./get-calendar-events";
-
-export { getEvents };
+export { googleCalendar } from "./google-calendar";

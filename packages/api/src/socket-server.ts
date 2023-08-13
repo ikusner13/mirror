@@ -31,9 +31,17 @@ export function createWebsocketServer(
     });
   };
 
-  const sendEvent = async (
+  process.on("SIGINT", () => {
+    shutdown();
+  });
+
+  process.on("SIGTERM", () => {
+    shutdown();
+  });
+
+  const sendEvent = async <T>(
     event: string,
-    data: () => Promise<any> | string,
+    data: (() => Promise<T>) | string,
   ) => {
     if (typeof data === "string") {
       wss.clients.forEach((client) => {

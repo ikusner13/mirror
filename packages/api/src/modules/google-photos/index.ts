@@ -1,3 +1,1 @@
-import { getPhoto } from "./fetch-photos";
-
-export { getPhoto };
+export { googlePhotos } from "./google-photos";
