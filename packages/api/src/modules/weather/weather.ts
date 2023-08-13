@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-
 const weatherApiKey = "b8d8163c79b9574cc193215f73d445c9";
 const ZIP = "43201";
 

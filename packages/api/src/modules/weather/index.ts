@@ -1,3 +1,3 @@
-import { getWeather } from "./get-weather";
+import { getWeather } from "./weather";
 
 export { getWeather };

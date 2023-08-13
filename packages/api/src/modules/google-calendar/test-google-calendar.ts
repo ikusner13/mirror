@@ -1,9 +1,18 @@
-import { getEvents } from "./get-calendar-events";
+import { googleCredentialManager } from "../../google-auth";
+import { googleCalendar } from "./google-calendar";
 
-getEvents()
-  .then((events) => {
-    console.log(events);
+googleCredentialManager
+  .initialize()
+  .then(() => {
+    googleCalendar
+      .getUpcomingEvents()
+      .then((events) => {
+        console.log(events);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   })
-  .catch((error) => {
-    console.error(error);
+  .catch((err) => {
+    console.error(err);
   });

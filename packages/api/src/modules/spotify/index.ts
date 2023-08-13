@@ -1,3 +1,1 @@
-import { getTrackLoop } from "./get-now-playing";
-
-export { getTrackLoop };
+export { spotifyManager } from "./spotify";

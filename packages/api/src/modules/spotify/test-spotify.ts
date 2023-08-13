@@ -1,9 +1,17 @@
-import { getMyPlayingTrack } from "./get-now-playing";
+import { spotifyManager } from "./spotify";
 
-getMyPlayingTrack()
-  .then((track) => {
-    console.log("track", track);
+spotifyManager
+  .initialize()
+  .then(() => {
+    spotifyManager
+      .getMyPlayingTrack()
+      .then((track) => {
+        console.log(track);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   })
-  .catch((error) => {
-    console.error(error);
+  .catch((err) => {
+    console.error(err);
   });

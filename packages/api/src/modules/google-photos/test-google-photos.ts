@@ -1,9 +1,18 @@
-import { getPhoto } from "./fetch-photos";
+import { googleCredentialManager } from "../../google-auth";
+import { googlePhotos } from "./google-photos";
 
-getPhoto()
-  .then((photo) => {
-    console.log(photo);
+googleCredentialManager
+  .initialize()
+  .then(() => {
+    googlePhotos
+      .getPhoto()
+      .then((photo) => {
+        console.log(photo);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   })
-  .catch((error) => {
-    console.error(error);
+  .catch((err) => {
+    console.error(err);
   });

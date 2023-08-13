@@ -1,4 +1,4 @@
-import { getWeather } from "./get-weather";
+import { getWeather } from "./weather";
 
 getWeather()
   .then((weather) => {
