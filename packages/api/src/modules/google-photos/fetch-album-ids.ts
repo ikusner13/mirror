@@ -1,19 +1,15 @@
 /// <reference lib="dom" />
 
-import { getTokens } from "../../google-auth";
+import { googleCredentialManager } from "../../google-auth";
 
 export async function fetchAlbumIds() {
-  const tokens = await getTokens();
-
-  if (!tokens?.token) {
-    throw new Error("no tokens");
-  }
+  const token = await googleCredentialManager.getAccessToken();
 
   const albumResponse = await fetch(
     "https://photoslibrary.googleapis.com/v1/albums",
     {
       headers: {
-        Authorization: `Bearer ${tokens.token}`,
+        Authorization: `Bearer ${token}`,
       },
     },
   );

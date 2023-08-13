@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { getTokens } from "../../google-auth";
+import { googleCredentialManager } from "../../google-auth";
 import { getRandomPhoto } from "./get-random-photo";
 
 type PhotoResponse = {
@@ -25,11 +25,7 @@ const albumId =
   "AKcvZRwngYxfEg0WthniYt7tZG4BW3m5JKYYQGWUu7XNlFmTDcgqGqeK36lh1fF_AuOUTk01MAjc"; // Replace with your album ID
 
 export async function getPhotos() {
-  const tokens = await getTokens();
-
-  if (!tokens?.token) {
-    throw new Error("no tokens");
-  }
+  const token = await googleCredentialManager.getAccessToken();
 
   const searchResponse = await fetch(
     "https://photoslibrary.googleapis.com/v1/mediaItems:search",
@@ -39,7 +35,7 @@ export async function getPhotos() {
         pageSize: 100, // Get up to 100 media items from the album
       }),
       headers: {
-        Authorization: `Bearer ${tokens.token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       method: "POST",
@@ -65,7 +61,7 @@ export async function getPhotos() {
           pageToken: nextPageToken,
         }),
         headers: {
-          Authorization: `Bearer ${tokens.token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         method: "POST",
@@ -86,13 +82,3 @@ export async function getPhoto() {
 
   return getRandomPhoto(photos);
 }
-
-/*getPhotos()
-  .then((photos) => {
-    const randomPhoto = getRandomPhoto(photos);
-
-    console.log("randomPhoto", randomPhoto);
-  })
-  .catch((err) => {
-    console.error("err", err);
-  });*/

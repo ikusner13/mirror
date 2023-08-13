@@ -1,14 +1,9 @@
-import { type Auth, google } from "googleapis";
+import { google } from "googleapis";
 
-import { loadSavedCredentialsIfExist } from "../../google-auth";
+import { googleCredentialManager } from "../../google-auth";
 
 async function listEvents() {
-  const auth =
-    (await loadSavedCredentialsIfExist()) as Auth.OAuth2Client | null;
-
-  if (!auth) {
-    return [];
-  }
+  const auth = googleCredentialManager.getCredentials();
 
   const calendar = google.calendar({ auth, version: "v3" });
   const res = await calendar.events.list({
@@ -30,7 +25,6 @@ async function listEvents() {
   }
 
   return events.map((event) => {
-    console.log(event);
     return {
       id: event.id,
       kind: event.kind,
@@ -45,5 +39,3 @@ export async function getEvents() {
 
   return events;
 }
-
-//listEvents().catch(console.error);
