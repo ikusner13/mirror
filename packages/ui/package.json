@@ -10,6 +10,10 @@
     "lint": "eslint \"src\"",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "dayjs": "^1.11.9",
+    "lucide-svelte": "^0.268.0"
+  },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.3",
     "@tsconfig/svelte": "^5.0.0",
