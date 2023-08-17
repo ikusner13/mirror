@@ -2,11 +2,11 @@
   import { onMount } from "svelte";
 
   import Calendar from "./lib/Calendar.svelte";
-  import DateTime from "./lib/DateTime.svelte";
-  import GooglePhoto from "./lib/GooglePhoto.svelte";
   import Message from "./lib/Message.svelte";
   import Spotify from "./lib/Spotify.svelte";
   import Weather from "./lib/Weather.svelte";
+  import DateTime from "./lib/date-time.svelte";
+  import GooglePhoto from "./lib/google-photo.svelte";
   import store from "./store.js";
 
   let messages = [];

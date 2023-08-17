@@ -1,8 +1,4 @@
 <script lang="ts">
-  const weather = {
-    condition: "sunny",
-    temp: 80,
-  };
 </script>
 
 <section>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Music4, Mic2 } from "lucide-svelte";
 </script>
 
 <section>
