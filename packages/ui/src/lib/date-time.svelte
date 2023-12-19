@@ -41,7 +41,9 @@
 <section>
   <div id="" class="clockWrapper">
     <p class="clockDisplay">
-      {hour < 12 ? hour : hour - 12} : {min} : {sec}
+      {hour < 12 ? hour : hour - 12}:{min < 10 ? `0${min}` : min}:{sec < 10
+        ? `0${sec}`
+        : sec}
       {dayOrNight}
     </p>
     <p>
@@ -60,7 +62,7 @@
     align-items: center;
   }
   .clockDisplay {
-    font-size: 1rem;
+    font-size: 1.25rem;
     color: #ffffff;
   }
 </style>

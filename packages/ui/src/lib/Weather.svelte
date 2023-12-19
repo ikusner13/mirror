@@ -10,13 +10,13 @@
 
 <section>
   <div class="condition">
-    <div>
+    <div class="weather-row">
       <Icon />
-      <span class="temp">
+      <span>
         {Math.round(Number(weather.temp))}&deg;
       </span>
     </div>
-    <span>{weather.condition}</span>
+    <span class="weather-condition">{weather.condition}</span>
   </div>
 </section>
 
@@ -30,8 +30,14 @@
     margin-bottom: 5px;
   }
 
-  .temp {
-    margin-bottom: 5px;
-    margin-right: 3px;
+  .weather-condition {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .weather-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 </style>

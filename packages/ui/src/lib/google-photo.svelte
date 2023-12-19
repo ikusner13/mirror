@@ -3,8 +3,8 @@
 
 <section>
   <img
-    src="https://image.flaticon.com/icons/svg/861/861059.svg"
-    alt="weather icon"
+    src="https://fastly.picsum.photos/id/566/300/300.jpg?hmac=StxqNDztcSx2Ih1d__-ZobUxowXpIgctHFxedI3cz4s"
+    alt="test"
   />
 </section>
 
