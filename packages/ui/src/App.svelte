@@ -1,8 +1,13 @@
 <script lang="ts">
-  import Counter from "./lib/Counter.svelte";
   import { onMount } from "svelte";
-  import store from "./store.js";
+
+  import Calendar from "./lib/Calendar.svelte";
   import Message from "./lib/Message.svelte";
+  import Spotify from "./lib/Spotify.svelte";
+  import Weather from "./lib/Weather.svelte";
+  import DateTime from "./lib/date-time.svelte";
+  import GooglePhoto from "./lib/google-photo.svelte";
+  import store from "./store.js";
 
   let messages = [];
 
@@ -13,21 +18,72 @@
   });
 </script>
 
-<main>
-  <h1>Vite + Svelte</h1>
+<main class="main">
+  <section class="dateTime">
+    <DateTime />
+  </section>
 
-  <div class="card">
-    <Counter />
-  </div>
+  <section class="calendar">
+    <Calendar />
+  </section>
 
-  <div>
-    <h1>Hello Chat</h1>
+  <section class="weather">
+    <Weather />
+  </section>
 
-    {#each messages as message, i}
-      <Message {message} direction={i % 2 == 0 ? "left" : "right"} />
-    {/each}
-  </div>
+  <section class="photo">
+    <GooglePhoto />
+  </section>
+
+  <section class="message">
+    <Message message="test" />
+  </section>
+
+  <section class="spotify">
+    <Spotify />
+  </section>
 </main>
 
 <style>
+  main {
+    min-height: calc(100vh - 4rem);
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  main > section {
+    position: absolute;
+  }
+  .calendar {
+    bottom: 0;
+    left: 0;
+  }
+
+  .dateTime {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .weather {
+    bottom: 0;
+    right: 0;
+  }
+
+  .photo {
+    top: 0;
+    left: 0;
+  }
+
+  .message {
+    top: 0;
+    right: 0;
+  }
+
+  .spotify {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 </style>

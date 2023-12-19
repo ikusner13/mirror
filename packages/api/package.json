@@ -3,29 +3,42 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "albumIds": "ts-node ./src/modules/google-photos/fetch-album-ids.ts",
+    "authorize": "ts-node ./src/modules/google-calendar/authorize.ts",
     "build": "tsc",
+    "calendar": "ts-node ./src/modules/google-calendar/test-google-calendar.ts",
     "clean": "rm -rf dist",
     "dev": "nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
+    "generate-message": "ts-node ./src/modules/message/generate-message.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
-    "start": "node -r esbuild-register ./src/index.ts"
+    "photos": "ts-node ./src/modules/google-photos/test-google-photos.ts",
+    "spotify": "ts-node ./src/modules/spotify/test-spotify.ts",
+    "start": "node -r esbuild-register ./src/index.ts",
+    "weather": "ts-node ./src/modules/weather/test-weather.ts"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "logger": "workspace:*",
+    "cron": "^2.4.0",
+    "googleapis": "^123.0.0",
     "morgan": "^1.10.0",
-    "socket-server": "workspace:*"
+    "openai": "^3.3.0",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.13",
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.16.18",
+    "@types/ws": "^8.5.5",
     "esbuild": "^0.18.17",
     "esbuild-register": "^3.4.2",
     "eslint": "^8.46.0",
-    "eslint-config-custom-server": "workspace:*",
+    "eslint-config-mirror": "workspace:*",
     "nodemon": "^3.0.1",
+    "oazapfts": "^4.7.4",
+    "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.6"
   }

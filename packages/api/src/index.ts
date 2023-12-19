@@ -1,30 +1,27 @@
-import http from "http";
-import { createWebsocketServer } from "socket-server";
-import { log } from "logger";
+import { initServer } from "./init-server";
 
-const port = process.env.PORT || 3001;
-const server = http.createServer();
+const port = process.env["PORT"] ?? 3001;
 
-const { shutdown, wss } = createWebsocketServer(server);
+initServer()
+  .then((server) => {
+    server.listen(port, () => {
+      console.log(`api running on ${port}`);
+    });
 
-server.listen(port, () => {
-  log(`api running on ${port}`);
-});
+    // start spotify fetch loop
 
-process.on("SIGTERM", () => {
-  shutdown();
+    process.on("SIGTERM", () => {
+      server.close(() => {
+        throw new Error("server closed");
+      });
+    });
 
-  server.close(() => {
-    // log("closed server");
-    process.exit(0);
+    process.on("SIGINT", () => {
+      server.close(() => {
+        throw new Error("server closed");
+      });
+    });
+  })
+  .catch((err) => {
+    throw err;
   });
-});
-
-process.on("SIGINT", () => {
-  shutdown();
-
-  server.close(() => {
-    // log("closed server");
-    process.exit(0);
-  });
-});

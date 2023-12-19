@@ -1,15 +1,16 @@
 /** @typedef  {import("prettier").Config} PrettierConfig*/
-/** @typedef  {{ tailwindConfig: string, tailwindFunctions: string[] }} TailwindConfig*/
 
-/** @type { PrettierConfig | TailwindConfig } */
+/** @type { PrettierConfig} */
 const config = {
   arrowParens: "always",
-  printWidth: 80,
-  singleQuote: false,
   jsxSingleQuote: false,
+  pluginSearchDirs: false,
+  plugins: [require.resolve("prettier-plugin-packagejson")],
+  printWidth: 80,
   semi: true,
-  trailingComma: "all",
+  singleQuote: false,
   tabWidth: 2,
+  trailingComma: "all",
 };
 
 module.exports = config;

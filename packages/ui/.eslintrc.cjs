@@ -1,18 +1,8 @@
 module.exports = {
   root: true,
-  extends: ["plugin:svelte/recommended", "custom"],
-  ignorePatterns: ["*.cjs"],
+  extends: ["mirror/base", "mirror/svelte"],
   parserOptions: {
-    project: "tsconfig.json",
     extraFileExtensions: [".svelte"],
+    project: "./tsconfig.json",
   },
-  overrides: [
-    {
-      files: ["*.svelte"],
-      parser: "svelte-eslint-parser",
-      parserOptions: {
-        parser: "@typescript-eslint/parser",
-      },
-    },
-  ],
 };

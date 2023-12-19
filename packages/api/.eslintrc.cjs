@@ -1,4 +1,5 @@
 module.exports = {
   root: true,
-  extends: ["custom-server"],
+  extends: ["mirror/base", "mirror/node"],
+  ignorePatterns: ["src/modules/spotify/spotify.api.ts"],
 };
