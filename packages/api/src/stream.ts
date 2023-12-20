@@ -27,3 +27,22 @@ export function sendEvent(stream: Readable, event: string, data: string) {
   stream.push(`event: ${event}\n`);
   stream.push(`data: ${data}\n\n`);
 }
+
+export class StreamManager {
+  constructor(private streams: Set<Readable> = new Set()) {}
+
+  addStream(stream: Readable) {
+    this.streams.add(stream);
+    stream.on("close", () => {
+      this.streams.delete(stream);
+    });
+  }
+
+  sendEvent(event: string, data: string) {
+    this.streams.forEach((stream) => {
+      sendEvent(stream, event, data);
+    });
+  }
+}
+
+export const streamManager = new StreamManager();

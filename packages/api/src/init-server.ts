@@ -1,4 +1,4 @@
-import http, { type Server as HTTPServer } from "http";
+import { type Server as HTTPServer, createServer } from "http";
 
 import { googleCredentialManager } from "./google-auth";
 import {
@@ -8,7 +8,7 @@ import {
   spotifyManager,
 } from "./modules";
 import { createCronJob } from "./scheduler";
-import { createWebsocketServer } from "./socket-server";
+import { StreamManager, createStream } from "./stream";
 
 const initializeModules = async () => {
   // get credentials for google modules
@@ -18,41 +18,54 @@ const initializeModules = async () => {
   await spotifyManager.initialize();
 };
 
-const setupModuleEvents = (server: HTTPServer) => {
-  const { sendEvent, wss } = createWebsocketServer(server, {});
+const setupModuleEvents = (streamManager: StreamManager) => {
+  const weatherJob = createCronJob(async () => {
+    const weather = await getWeather();
 
-  const weatherJob = createCronJob(
-    () => sendEvent("weather", getWeather),
-    `0 */${10} * * * *`,
-  );
-  const calendarJob = createCronJob(
-    () => sendEvent("calendar", getUpcomingEvents),
-    `0 */${15} * * * *`,
-  );
-  const photoJob = createCronJob(
-    () => sendEvent("photo", getPhoto),
-    "0 0 * * * *",
-  );
+    streamManager.sendEvent("weather", JSON.stringify(weather));
+  }, `0 */${10} * * * *`);
+
+  const calendarJob = createCronJob(async () => {
+    const events = await getUpcomingEvents();
+
+    streamManager.sendEvent("calendar", JSON.stringify(events));
+  }, `0 */${15} * * * *`);
+
+  const photoJob = createCronJob(async () => {
+    const photo = await getPhoto();
+
+    streamManager.sendEvent("photo", JSON.stringify(photo));
+  }, "0 0 * * * *");
 
   weatherJob.start();
   photoJob.start();
   calendarJob.start();
 
   spotifyManager.getTrackLoop((track) => {
-    wss.clients.forEach((client) => {
-      client.send(JSON.stringify({ data: track, event: "spotify" }));
-    });
+    streamManager.sendEvent("spotify", JSON.stringify(track));
   });
 };
 
-const initServer = async () => {
-  const server = http.createServer();
-
+export const initServer = async (): Promise<HTTPServer> => {
+  const streamManager = new StreamManager();
   await initializeModules();
-
-  setupModuleEvents(server);
+  const server = configureServer(streamManager);
 
   return server;
 };
 
-export { initServer };
+const configureServer = (streamManager: StreamManager): HTTPServer => {
+  const server = createServer((req, res) => {
+    if (req.url === "/events") {
+      const stream = createStream(req, res);
+      streamManager.addStream(stream);
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  });
+
+  setupModuleEvents(streamManager);
+
+  return server;
+};
