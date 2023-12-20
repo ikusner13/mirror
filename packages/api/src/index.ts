@@ -8,8 +8,6 @@ initServer()
       console.log(`api running on ${port}`);
     });
 
-    // start spotify fetch loop
-
     process.on("SIGTERM", () => {
       server.close(() => {
         throw new Error("server closed");

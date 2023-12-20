@@ -1,27 +1,24 @@
 import { CronJob } from "cron";
 
-export const createCronJob = (
-  task: () => Promise<void>,
-  cronString: string,
-) => {
+export function createCronJob(task: () => Promise<void>, cronString: string) {
   return new CronJob(cronString, () => {
     task().catch((error) => {
       console.error(error);
     });
   });
-};
+}
 
-export const testJob = (task: () => void, seconds: number) => {
+export function testJob(task: () => void, seconds: number) {
   return new CronJob(`*/${seconds} * * * * *`, task);
-};
+}
 
-export const createMessageJob = ({
+export function createMessageJob({
   bedtimeTask,
   morningTask,
 }: {
   bedtimeTask: () => void;
   morningTask: () => void;
-}) => {
+}) {
   return new CronJob(
     "30 5,20 * * *",
     function () {
@@ -37,4 +34,4 @@ export const createMessageJob = ({
     false,
     "America/Los_Angeles",
   );
-};
+}
