@@ -28,134 +28,21 @@ type GetMyPlayingTrackResponse = {
   };
 };
 
-export type SpotifyManager = {
-  getCredentials: () => SpotifyCredentials;
-  getMyPlayingTrack: () => Promise<GetMyPlayingTrackResponse | null>;
-  getTrackLoop: (
-    onSuccessCB: (track: GetMyPlayingTrackResponse) => void,
-  ) => void;
-  initialize: () => Promise<void>;
-};
+class SpotifyManager {
+  private cachedCredentials: SpotifyCredentials | null = null;
+  private fetchDelay = 3000;
 
-function createSpotifyManager(): SpotifyManager {
-  let cachedCredentials: SpotifyCredentials | null = null;
-  let fetchDelay = 3000;
-
-  const initialize = async (): Promise<void> => {
-    if (cachedCredentials) {
-      return;
-    }
-
-    try {
-      const content = await fs.readFile("./spotify.json", "utf-8");
-      const loadedCredentials = JSON.parse(content) as SpotifyCredentials;
-
-      cachedCredentials = loadedCredentials;
-
-      await handleTokenRefresh();
-    } catch (err) {
-      throw new Error("Could not load Spotify credentials");
-    }
-  };
-
-  const handleTokenRefresh = async () => {
-    const data = await refreshAccessToken();
-
-    if (cachedCredentials) {
-      cachedCredentials.accessToken = data.access_token;
-      cachedCredentials.expiresAt = Date.now() + data.expires_in * 1000;
-    }
-  };
-
-  const refreshAccessToken = async () => {
-    if (!cachedCredentials) {
+  getCredentials = (): SpotifyCredentials => {
+    if (!this.cachedCredentials) {
       throw new Error("Spotify credentials not initialized");
     }
 
-    try {
-      const response = await fetch(new URL("api/token", tokenRefreshBase), {
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: cachedCredentials.refreshToken,
-        }),
-        headers: {
-          Authorization:
-            "Basic " +
-            Buffer.from(
-              cachedCredentials.clientID + ":" + cachedCredentials.clientSecret,
-            ).toString("base64"),
-        },
-        method: "POST",
-      });
-
-      if (response.ok) {
-        const data = (await response.json()) as RefreshTokenResponse;
-        return data;
-      }
-
-      throw new Error("Could not refresh Spotify access token");
-    } catch (error) {
-      throw new Error("Could not refresh Spotify access token");
-    }
+    return this.cachedCredentials;
   };
 
-  const getCredentials = (): SpotifyCredentials => {
-    if (!cachedCredentials) {
-      throw new Error("Spotify credentials not initialized");
-    }
-
-    return cachedCredentials;
-  };
-
-  const getNowPlayingData = async () => {
-    if (!cachedCredentials) {
-      throw new Error("Spotify credentials not initialized");
-    }
-
-    if (Date.now() - fetchDelay > cachedCredentials.expiresAt) {
-      await handleTokenRefresh();
-    }
-
-    try {
-      const response = await fetch(
-        new URL("v1/me/player/currently-playing", userBase),
-        {
-          headers: {
-            Authorization: `Bearer ${cachedCredentials.accessToken}`,
-          },
-          referrerPolicy: "no-referrer",
-        },
-      );
-
-      if (response.status === 200) {
-        const data = (await response.json()) as CurrentlyPlayingObject;
-        fetchDelay = 3000;
-        return data;
-      }
-
-      if (response.status === 204) {
-        return null;
-      }
-
-      if (response.status === 429) {
-        fetchDelay = fetchDelay * 2;
-        return null;
-      }
-
-      if (response.status === 401) {
-        await refreshAccessToken();
-        return null;
-      }
-    } catch (error) {
-      return null;
-    }
-
-    return null;
-  };
-
-  const getMyPlayingTrack = async () => {
+  getMyPlayingTrack = async () => {
     // get now playing data
-    const nowPlayingData = await getNowPlayingData();
+    const nowPlayingData = await this.getNowPlayingData();
 
     // if no data, return null
     if (!nowPlayingData) {
@@ -177,10 +64,54 @@ function createSpotifyManager(): SpotifyManager {
     return item as GetMyPlayingTrackResponse;
   };
 
-  const getTrackLoop = (
-    onSuccessCB: (track: GetMyPlayingTrackResponse) => void,
-  ) => {
-    getMyPlayingTrack()
+  getNowPlayingData = async () => {
+    if (!this.cachedCredentials) {
+      throw new Error("Spotify credentials not initialized");
+    }
+
+    if (Date.now() - this.fetchDelay > this.cachedCredentials.expiresAt) {
+      await this.handleTokenRefresh();
+    }
+
+    try {
+      const response = await fetch(
+        new URL("v1/me/player/currently-playing", userBase),
+        {
+          headers: {
+            Authorization: `Bearer ${this.cachedCredentials.accessToken}`,
+          },
+          referrerPolicy: "no-referrer",
+        },
+      );
+
+      if (response.status === 200) {
+        const data = (await response.json()) as CurrentlyPlayingObject;
+        this.fetchDelay = 3000;
+        return data;
+      }
+
+      if (response.status === 204) {
+        return null;
+      }
+
+      if (response.status === 429) {
+        this.fetchDelay = this.fetchDelay * 2;
+        return null;
+      }
+
+      if (response.status === 401) {
+        await this.refreshAccessToken();
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+
+    return null;
+  };
+
+  getTrackLoop = (onSuccessCB: (track: GetMyPlayingTrackResponse) => void) => {
+    this.getMyPlayingTrack()
       .then((track) => {
         if (track) {
           onSuccessCB(track);
@@ -191,16 +122,69 @@ function createSpotifyManager(): SpotifyManager {
         // You might want to retry after an error:
       })
       .finally(() => {
-        setTimeout(() => getTrackLoop(onSuccessCB), fetchDelay);
+        setTimeout(() => this.getTrackLoop(onSuccessCB), this.fetchDelay);
       });
   };
 
-  return {
-    getCredentials,
-    getMyPlayingTrack,
-    getTrackLoop,
-    initialize,
+  handleTokenRefresh = async () => {
+    const data = await this.refreshAccessToken();
+
+    if (this.cachedCredentials) {
+      this.cachedCredentials.accessToken = data.access_token;
+      this.cachedCredentials.expiresAt = Date.now() + data.expires_in * 1000;
+    }
+  };
+
+  initialize = async (): Promise<void> => {
+    if (this.cachedCredentials) {
+      return;
+    }
+
+    try {
+      const content = await fs.readFile("./spotify.json", "utf-8");
+      const loadedCredentials = JSON.parse(content) as SpotifyCredentials;
+
+      this.cachedCredentials = loadedCredentials;
+
+      await this.handleTokenRefresh();
+    } catch (err) {
+      throw new Error("Could not load Spotify credentials");
+    }
+  };
+
+  refreshAccessToken = async () => {
+    if (!this.cachedCredentials) {
+      throw new Error("Spotify credentials not initialized");
+    }
+
+    try {
+      const response = await fetch(new URL("api/token", tokenRefreshBase), {
+        body: new URLSearchParams({
+          grant_type: "refresh_token",
+          refresh_token: this.cachedCredentials.refreshToken,
+        }),
+        headers: {
+          Authorization:
+            "Basic " +
+            Buffer.from(
+              this.cachedCredentials.clientID +
+                ":" +
+                this.cachedCredentials.clientSecret,
+            ).toString("base64"),
+        },
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const data = (await response.json()) as RefreshTokenResponse;
+        return data;
+      }
+
+      throw new Error("Could not refresh Spotify access token");
+    } catch (error) {
+      throw new Error("Could not refresh Spotify access token");
+    }
   };
 }
 
-export const spotifyManager = createSpotifyManager();
+export const spotifyManager = new SpotifyManager();
