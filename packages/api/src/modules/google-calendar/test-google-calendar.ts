@@ -1,11 +1,10 @@
 import { googleCredentialManager } from "../../google-auth";
-import { googleCalendar } from "./google-calendar";
+import { getUpcomingEvents } from "./google-calendar";
 
 googleCredentialManager
   .initialize()
   .then(() => {
-    googleCalendar
-      .getUpcomingEvents()
+    getUpcomingEvents()
       .then((events) => {
         console.log(events);
       })

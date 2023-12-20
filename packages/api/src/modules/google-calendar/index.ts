@@ -1,1 +1,1 @@
-export { googleCalendar } from "./google-calendar";
+export { getUpcomingEvents } from "./google-calendar";

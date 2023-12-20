@@ -1,4 +1,3 @@
-import "@total-typescript/ts-reset";
 import fs from "fs/promises";
 import { type Auth, google } from "googleapis";
 import path from "path";
@@ -6,7 +5,7 @@ import process from "process";
 
 const TOKEN_PATH = path.join(process.cwd(), "token.json");
 
-class GoogleCredentialManager {
+export class GoogleCredentialManager {
   getAccessToken = async (): Promise<string> => {
     if (!this.cachedCredentials) {
       throw new Error("Credentials not initialized");

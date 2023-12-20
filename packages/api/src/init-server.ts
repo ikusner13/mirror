@@ -2,9 +2,9 @@ import http, { type Server as HTTPServer } from "http";
 
 import { googleCredentialManager } from "./google-auth";
 import {
+  getPhoto,
+  getUpcomingEvents,
   getWeather,
-  googleCalendar,
-  googlePhotos,
   spotifyManager,
 } from "./modules";
 import { createCronJob } from "./scheduler";
@@ -26,11 +26,11 @@ const setupModuleEvents = (server: HTTPServer) => {
     `0 */${10} * * * *`,
   );
   const calendarJob = createCronJob(
-    () => sendEvent("calendar", googleCalendar.getUpcomingEvents),
+    () => sendEvent("calendar", getUpcomingEvents),
     `0 */${15} * * * *`,
   );
   const photoJob = createCronJob(
-    () => sendEvent("photo", googlePhotos.getPhoto),
+    () => sendEvent("photo", getPhoto),
     "0 0 * * * *",
   );
 

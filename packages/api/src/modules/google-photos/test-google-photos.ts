@@ -1,18 +1,14 @@
 import { googleCredentialManager } from "../../google-auth";
-import { googlePhotos } from "./google-photos";
+import { getPhoto } from "./google-photos";
 
-googleCredentialManager
-  .initialize()
-  .then(() => {
-    googlePhotos
-      .getPhoto()
-      .then((photo) => {
-        console.log(photo);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+async function test() {
+  await googleCredentialManager.initialize();
+
+  const photo = await getPhoto();
+
+  console.log(photo);
+}
+
+test().catch((err) => {
+  console.error(err);
+});
