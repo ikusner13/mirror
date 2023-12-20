@@ -20,26 +20,26 @@
     "@google-cloud/local-auth": "^2.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "cron": "^2.4.0",
-    "googleapis": "^123.0.0",
+    "cron": "^2.4.4",
+    "googleapis": "^129.0.0",
     "morgan": "^1.10.0",
     "openai": "^3.3.0",
-    "ws": "^8.13.0"
+    "ws": "^8.15.1"
   },
   "devDependencies": {
-    "@types/body-parser": "^1.19.2",
-    "@types/cors": "^2.8.13",
-    "@types/morgan": "^1.9.4",
-    "@types/node": "^18.16.18",
-    "@types/ws": "^8.5.5",
-    "esbuild": "^0.18.17",
-    "esbuild-register": "^3.4.2",
-    "eslint": "^8.46.0",
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^18.19.3",
+    "@types/ws": "^8.5.10",
+    "esbuild": "^0.18.20",
+    "esbuild-register": "^3.5.0",
+    "eslint": "^8.56.0",
     "eslint-config-mirror": "workspace:*",
-    "nodemon": "^3.0.1",
-    "oazapfts": "^4.7.4",
-    "ts-node": "^10.9.1",
+    "nodemon": "^3.0.2",
+    "oazapfts": "^4.12.0",
+    "ts-node": "^10.9.2",
     "tsconfig": "workspace:*",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.3"
   }
 }
