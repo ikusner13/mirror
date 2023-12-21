@@ -1,11 +1,12 @@
 import { initServer } from "./init-server";
+import { logger } from "./logger";
 
 const port = process.env["PORT"] ?? 3001;
 
 initServer()
   .then((server) => {
     server.listen(port, () => {
-      console.log(`api running on ${port}`);
+      logger.info(`server listening on port ${port} 🚀`);
     });
 
     process.on("SIGTERM", () => {

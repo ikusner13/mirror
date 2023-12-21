@@ -1,17 +1,5 @@
-import { spotifyManager } from "./spotify";
+import { SpotifyManager } from "./spotify";
 
-spotifyManager
-  .initialize()
-  .then(() => {
-    spotifyManager
-      .getMyPlayingTrack()
-      .then((track) => {
-        console.log(track);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+async function test() {
+  const spotifyManager = new SpotifyManager();
+}

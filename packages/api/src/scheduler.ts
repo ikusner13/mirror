@@ -1,9 +1,11 @@
 import { CronJob } from "cron";
 
+import { logger } from "./logger";
+
 export function createCronJob(task: () => Promise<void>, cronString: string) {
   return new CronJob(cronString, () => {
     task().catch((error) => {
-      console.error(error);
+      logger.error(error);
     });
   });
 }

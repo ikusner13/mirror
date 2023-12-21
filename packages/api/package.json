@@ -23,7 +23,9 @@
     "cron": "^2.4.4",
     "googleapis": "^129.0.0",
     "openai": "^3.3.0",
-    "ws": "^8.15.1"
+    "ws": "^8.15.1",
+    "pino": "^8.17.1",
+    "pino-pretty": "^10.3.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",

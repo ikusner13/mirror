@@ -1,5 +1,6 @@
 import fs from "fs/promises";
 
+import { logger } from "../../logger";
 import { type StreamManager } from "../../stream";
 import { type Module } from "../module";
 import { type CurrentlyPlayingObject } from "./spotify.api";
@@ -29,6 +30,8 @@ type GetMyPlayingTrackResponse = {
     songName: string;
   };
 };
+
+const spotifyLogger = logger.child({ module: "spotify" });
 
 export class SpotifyManager implements Module {
   private cachedCredentials: SpotifyCredentials | null = null;
@@ -122,7 +125,7 @@ export class SpotifyManager implements Module {
         }
       })
       .catch((error) => {
-        console.error("Error in getTrackLoop:", error);
+        spotifyLogger.error(error);
         // You might want to retry after an error:
       })
       .finally(() => {

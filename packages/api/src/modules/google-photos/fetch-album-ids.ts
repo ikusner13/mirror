@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
 
+import { logger } from "../../logger";
 import { GoogleCredentialManager } from "../google-auth";
 
 export async function fetchAlbumIds() {
@@ -16,9 +17,9 @@ export async function fetchAlbumIds() {
   );
   const albums = await albumResponse.json();
 
-  console.log("your albums are: ", JSON.stringify(albums, null, 2));
+  logger.info("your albums are: ", albums);
 }
 
 fetchAlbumIds().catch((err) => {
-  console.error("err", err);
+  logger.error(err);
 });

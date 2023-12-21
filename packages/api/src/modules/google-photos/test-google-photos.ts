@@ -1,3 +1,4 @@
+import { logger } from "../../logger";
 import { GoogleCredentialManager } from "../google-auth";
 import { getPhoto } from "./google-photos";
 
@@ -7,9 +8,9 @@ async function test() {
 
   const photo = await getPhoto(googleCredentialManager);
 
-  console.log(photo);
+  logger.info(photo);
 }
 
 test().catch((err) => {
-  console.error(err);
+  logger.error(err);
 });

@@ -1,9 +1,10 @@
+import { logger } from "../../logger";
 import { getWeather } from "./weather";
 
 getWeather()
   .then((weather) => {
-    console.log(weather);
+    logger.info(weather);
   })
   .catch((error) => {
-    console.error(error);
+    logger.error(error);
   });

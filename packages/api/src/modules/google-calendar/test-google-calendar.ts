@@ -1,3 +1,4 @@
+import { logger } from "../../logger";
 import { GoogleCredentialManager } from "../google-auth";
 import { listEvents } from "./google-calendar";
 
@@ -7,9 +8,9 @@ async function test() {
 
   const events = await listEvents(googleCredentialManager);
 
-  console.log(events);
+  logger.info(events);
 }
 
 test().catch((err) => {
-  console.error(err);
+  logger.error(err);
 });
