@@ -6,7 +6,6 @@ import { type Auth, google } from "googleapis";
 import path from "path";
 import process from "process";
 
-import { env } from "../../env";
 import { logger } from "../../logger";
 
 // If modifying these scopes, delete token.json.
@@ -30,11 +29,18 @@ async function loadSavedCredentialsIfExist() {
   }
 }
 
-async function saveCredentials() {
+async function saveCredentials(client: Auth.OAuth2Client) {
+  const content = await fs.readFile(CREDENTIALS_PATH, "utf-8");
+  const keys = JSON.parse(content) as {
+    installed?: Auth.JWTInput;
+    web: Auth.JWTInput; // this type might be wrong
+  };
+  const key = keys.installed ?? keys.web;
+
   const payload = JSON.stringify({
-    client_id: env.GOOGLE__CLIENT_ID,
-    client_secret: env.GOOGLE__CLIENT_SECRET,
-    refresh_token: env.GOOGLE__REFRESH_TOKEN,
+    client_id: key.client_id,
+    client_secret: key.client_secret,
+    refresh_token: client.credentials.refresh_token,
     type: "authorized_user",
   });
   await fs.writeFile(TOKEN_PATH, payload);
