@@ -21,7 +21,7 @@
     "@google-cloud/local-auth": "^3.0.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "cron": "^2.4.4",
+    "cron": "^3.1.6",
     "dotenv-cli": "^7.3.0",
     "googleapis": "^129.0.0",
     "openai": "^3.3.0",
