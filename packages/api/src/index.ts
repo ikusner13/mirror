@@ -1,3 +1,4 @@
+/* eslint-disable n/no-process-exit */
 import { initServer } from "./init-server";
 import { logger } from "./logger";
 
@@ -10,17 +11,30 @@ initServer()
     });
 
     process.on("SIGTERM", () => {
-      server.close(() => {
-        throw new Error("server closed");
+      server.close((error) => {
+        if (error) {
+          logger.error("SIGTERM", error);
+          process.exit(1);
+        }
+
+        logger.info("server closed");
+        process.exit(0);
       });
     });
 
     process.on("SIGINT", () => {
-      server.close(() => {
-        throw new Error("server closed");
+      server.close((error) => {
+        if (error) {
+          logger.error("SIGINT", error);
+          process.exit(1);
+        }
+
+        logger.info("server closed");
+        process.exit(0);
       });
     });
   })
   .catch((err) => {
-    throw err;
+    logger.error(err);
+    process.exit(1);
   });
