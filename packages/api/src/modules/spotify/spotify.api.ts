@@ -1,7 +1,7 @@
 // @ts-nocheck
 /**
  * Spotify Web API with fixes and improvements from sonallux
- * 2023.6.7
+ * 2023.12.2
  * DO NOT MODIFY - This file has been generated using oazapfts.
  * See https://www.npmjs.com/package/oazapfts
  */
@@ -176,7 +176,7 @@ export type SimplifiedTrackObject = {
   name?: string;
   /** A URL to a 30 second preview (MP3 format) of the track.
    */
-  preview_url?: string;
+  preview_url?: string | null;
   /** The number of the track. If an album has several discs, the track number is the number on the specified disc.
    */
   track_number?: number;
@@ -193,6 +193,14 @@ export type SimplifiedTrackObject = {
 export type PagingSimplifiedTrackObject = PagingObject & {
   items?: SimplifiedTrackObject[];
 };
+export type CopyrightObject = {
+  /** The copyright text for this content.
+   */
+  text?: string;
+  /** The type of copyright: `C` = the copyright, `P` = the sound recording (performance) copyright.
+   */
+  type?: string;
+};
 export type ExternalIdObject = {
   /** [International Standard Recording Code](http://en.wikipedia.org/wiki/International_Standard_Recording_Code)
    */
@@ -204,14 +212,6 @@ export type ExternalIdObject = {
    */
   upc?: string;
 };
-export type CopyrightObject = {
-  /** The copyright text for this content.
-   */
-  text?: string;
-  /** The type of copyright: `C` = the copyright, `P` = the sound recording (performance) copyright.
-   */
-  type?: string;
-};
 export type AlbumObject = AlbumBase & {
   /** The artists of the album. Each artist object includes a link in `href` to more detailed information about the artist.
    */
@@ -219,17 +219,21 @@ export type AlbumObject = AlbumBase & {
   /** The tracks of the album.
    */
   tracks?: PagingSimplifiedTrackObject;
-  /** The popularity of the album, with 100 being the most popular. The popularity is calculated from the popularity of the album's individual tracks. */
-  popularity?: number;
-  /** The label for the album. */
-  label?: string;
+  /** The copyright statements of the album.
+   */
+  copyrights?: CopyrightObject[];
   /** Known external IDs for the album.
    */
   external_ids?: ExternalIdObject;
-  /** A list of the genres used to classify the album. (If not yet classified, the array is empty.) */
+  /** A list of the genres the album is associated with. If not yet classified, the array is empty.
+   */
   genres?: string[];
-  /** The copyright statements of the album. */
-  copyrights?: CopyrightObject[];
+  /** The label associated with the album.
+   */
+  label?: string;
+  /** The popularity of the album. The value will be between 0 and 100, with 100 being the most popular.
+   */
+  popularity?: number;
 };
 export type ErrorObject = {
   /** The HTTP status code (also returned in the response header; see [Response Status Codes](/documentation/web-api/concepts/api-calls#response-status-codes) for more information).
@@ -280,15 +284,17 @@ export type ArtistObject = {
   uri?: string;
 };
 export type SimplifiedAlbumObject = AlbumBase & {
-  /** The field is present when getting an artist's albums. Compare to album_type this field represents relationship between the artist and the album.
-   */
-  album_group?: "album" | "single" | "compilation" | "appears_on";
   /** The artists of the album. Each artist object includes a link in `href` to more detailed information about the artist.
    */
   artists: SimplifiedArtistObject[];
 };
-export type PagingSimplifiedAlbumObject = PagingObject & {
-  items?: SimplifiedAlbumObject[];
+export type ArtistDiscographyAlbumObject = SimplifiedAlbumObject & {
+  /** This field describes the relationship between the artist and the album.
+   */
+  album_group: "album" | "single" | "compilation" | "appears_on";
+};
+export type PagingArtistDiscographyAlbumObject = PagingObject & {
+  items?: ArtistDiscographyAlbumObject[];
 };
 export type TrackObject = {
   /** The album on which the track appears. The album object includes a link in `href` to full information about the album.
@@ -337,7 +343,7 @@ export type TrackObject = {
   popularity?: number;
   /** A link to a 30 second preview (MP3 format) of the track. Can be `null`
    */
-  preview_url?: string;
+  preview_url?: string | null;
   /** The number of the track. If an album has several discs, the track number is the number on the specified disc.
    */
   track_number?: number;
@@ -426,7 +432,7 @@ export type EpisodeRestrictionObject = {
 export type EpisodeBase = {
   /** A URL to a 30 second preview (MP3 format) of the episode. `null` if not available.
    */
-  audio_preview_url: string;
+  audio_preview_url: string | null;
   /** A description of the episode. HTML tags are stripped away from this field, use `html_description` field in case HTML tags are needed.
    */
   description: string;
@@ -582,61 +588,61 @@ export type ChapterRestrictionObject = {
   reason?: string;
 };
 export type ChapterBase = {
-  /** A URL to a 30 second preview (MP3 format) of the episode. `null` if not available.
+  /** A URL to a 30 second preview (MP3 format) of the chapter. `null` if not available.
    */
-  audio_preview_url: string;
+  audio_preview_url: string | null;
   /** A list of the countries in which the chapter can be played, identified by their [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code.
    */
   available_markets?: string[];
   /** The number of the chapter
    */
   chapter_number: number;
-  /** A description of the episode. HTML tags are stripped away from this field, use `html_description` field in case HTML tags are needed.
+  /** A description of the chapter. HTML tags are stripped away from this field, use `html_description` field in case HTML tags are needed.
    */
   description: string;
-  /** A description of the episode. This field may contain HTML tags.
+  /** A description of the chapter. This field may contain HTML tags.
    */
   html_description: string;
-  /** The episode length in milliseconds.
+  /** The chapter length in milliseconds.
    */
   duration_ms: number;
-  /** Whether or not the episode has explicit content (true = yes it does; false = no it does not OR unknown).
+  /** Whether or not the chapter has explicit content (true = yes it does; false = no it does not OR unknown).
    */
   explicit: boolean;
-  /** External URLs for this episode.
+  /** External URLs for this chapter.
    */
   external_urls: ExternalUrlObject;
-  /** A link to the Web API endpoint providing full details of the episode.
+  /** A link to the Web API endpoint providing full details of the chapter.
    */
   href: string;
-  /** The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the episode.
+  /** The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the chapter.
    */
   id: string;
-  /** The cover art for the episode in various sizes, widest first.
+  /** The cover art for the chapter in various sizes, widest first.
    */
   images: ImageObject[];
-  /** True if the episode is playable in the given market. Otherwise false.
+  /** True if the chapter is playable in the given market. Otherwise false.
    */
   is_playable: boolean;
-  /** A list of the languages used in the episode, identified by their [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639) code.
+  /** A list of the languages used in the chapter, identified by their [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639) code.
    */
   languages: string[];
-  /** The name of the episode.
+  /** The name of the chapter.
    */
   name: string;
-  /** The date the episode was first released, for example `"1981-12-15"`. Depending on the precision, it might be shown as `"1981"` or `"1981-12"`.
+  /** The date the chapter was first released, for example `"1981-12-15"`. Depending on the precision, it might be shown as `"1981"` or `"1981-12"`.
    */
   release_date: string;
   /** The precision with which `release_date` value is known.
    */
   release_date_precision: "year" | "month" | "day";
-  /** The user's most recent position in the episode. Set if the supplied access token is a user token and has the scope 'user-read-playback-position'.
+  /** The user's most recent position in the chapter. Set if the supplied access token is a user token and has the scope 'user-read-playback-position'.
    */
   resume_point: ResumePointObject;
   /** The object type.
    */
   type: "episode";
-  /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the episode.
+  /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the chapter.
    */
   uri: string;
   /** Included in the response when a content restriction is applied.
@@ -675,6 +681,9 @@ export type PagingTrackObject = PagingObject & {
 };
 export type PagingArtistObject = PagingObject & {
   items?: ArtistObject[];
+};
+export type PagingSimplifiedAlbumObject = PagingObject & {
+  items?: SimplifiedAlbumObject[];
 };
 export type PlaylistUserObject = {
   /** Known public external URLs for this user.
@@ -1201,7 +1210,7 @@ export type RecommendationsObject = {
   tracks: TrackObject[];
 };
 export type DeviceObject = {
-  /** The device ID. */
+  /** The device ID. This ID is unique and persistent to some extent. However, this is not guaranteed and any cached `device_id` should periodically be cleared out and refetched as necessary. */
   id?: string | null;
   /** If this device is the currently active device. */
   is_active?: boolean;
@@ -1215,6 +1224,8 @@ export type DeviceObject = {
   type?: string;
   /** The current volume in percent. */
   volume_percent?: number | null;
+  /** If this device can be used to set the volume. */
+  supports_volume?: boolean;
 };
 export type ContextObject = {
   /** The object type, e.g. "artist", "playlist", "album", "show".
@@ -1281,10 +1292,6 @@ export type CurrentlyPlayingContextObject = {
    */
   actions?: DisallowsObject;
 };
-export type DevicesObject = {
-  /** A list of 0..n Device objects */
-  devices?: DeviceObject[];
-};
 export type CurrentlyPlayingObject = {
   /** A Context Object. Can be `null`. */
   context?: ContextObject;
@@ -1305,6 +1312,9 @@ export type CurrentlyPlayingObject = {
   /** The object type of the currently playing item. Can be one of `track`, `episode`, `ad` or `unknown`.
    */
   currently_playing_type?: string;
+  /** Allows to update the user interface based on which playback actions are available within the current context.
+   */
+  actions?: DisallowsObject;
 };
 export type PlayHistoryObject = {
   /** The track the user listened to. */
@@ -1592,7 +1602,7 @@ export function getArtistsByIdAlbums(
     oazapfts.fetchJson<
       | {
           status: 200;
-          data: PagingSimplifiedAlbumObject;
+          data: PagingArtistDiscographyAlbumObject;
         }
       | {
           status: 401;
@@ -5131,7 +5141,9 @@ export function getMePlayerDevices(opts?: Oazapfts.RequestOpts) {
     oazapfts.fetchJson<
       | {
           status: 200;
-          data: DevicesObject;
+          data: {
+            devices: DeviceObject[];
+          };
         }
       | {
           status: 401;
