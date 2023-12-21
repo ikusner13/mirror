@@ -6,7 +6,7 @@ import { type StreamManager } from "../../stream";
 import { type GoogleCredentialManager } from "../google-auth";
 import { type Module } from "../module";
 
-async function listEvents(credentialManager: GoogleCredentialManager) {
+export async function listEvents(credentialManager: GoogleCredentialManager) {
   const auth = credentialManager.getCredentials();
 
   const calendar = google.calendar({ auth, version: "v3" });

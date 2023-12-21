@@ -1,17 +1,15 @@
-import { googleCredentialManager } from "../../google-auth";
-import { getUpcomingEvents } from "./google-calendar";
+import { GoogleCredentialManager } from "../google-auth";
+import { listEvents } from "./google-calendar";
 
-googleCredentialManager
-  .initialize()
-  .then(() => {
-    getUpcomingEvents()
-      .then((events) => {
-        console.log(events);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+async function test() {
+  const googleCredentialManager = new GoogleCredentialManager();
+  await googleCredentialManager.init();
+
+  const events = await listEvents(googleCredentialManager);
+
+  console.log(events);
+}
+
+test().catch((err) => {
+  console.error(err);
+});

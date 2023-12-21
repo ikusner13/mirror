@@ -1,10 +1,11 @@
-import { googleCredentialManager } from "../../google-auth";
+import { GoogleCredentialManager } from "../google-auth";
 import { getPhoto } from "./google-photos";
 
 async function test() {
-  await googleCredentialManager.initialize();
+  const googleCredentialManager = new GoogleCredentialManager();
+  await googleCredentialManager.init();
 
-  const photo = await getPhoto();
+  const photo = await getPhoto(googleCredentialManager);
 
   console.log(photo);
 }
