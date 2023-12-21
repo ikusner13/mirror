@@ -34,3 +34,11 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+# env
+.env
+
+# credentials
+credentials.json
+token.json
+token-ian.json
