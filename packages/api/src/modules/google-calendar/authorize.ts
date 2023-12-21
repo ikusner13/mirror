@@ -101,4 +101,8 @@ async function listEvents(auth: Auth.OAuth2Client) {
   // });
 }
 
-authorize().then(listEvents).catch(logger.error);
+authorize()
+  .then(listEvents)
+  .catch((err) => {
+    logger.error(err);
+  });

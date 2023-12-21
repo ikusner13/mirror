@@ -7,7 +7,7 @@ import { type GoogleCredentialManager } from "../google-auth";
 import { type Module } from "../module";
 
 type PhotoResponse = {
-  mediaItems: {
+  mediaItems?: {
     baseUrl: string;
     contributorInfo: object;
     description: string;
@@ -17,7 +17,7 @@ type PhotoResponse = {
     mimeType: string;
     productUrl: string;
   }[];
-  nextPageToken: string;
+  nextPageToken?: string;
 };
 
 /**
@@ -25,7 +25,7 @@ type PhotoResponse = {
  */
 
 const albumId =
-  "AKcvZRwngYxfEg0WthniYt7tZG4BW3m5JKYYQGWUu7XNlFmTDcgqGqeK36lh1fF_AuOUTk01MAjc"; // Replace with your album ID
+  "AKcvZRwngYxfEg0WthniYt7tZG4BW3m5JKYYQGWUu7XNlFmTDcgqGqeK36lh1fF_AuOUTk01MAjc";
 
 async function getPhotos(credentialManager: GoogleCredentialManager) {
   const token = await credentialManager.getAccessToken();
@@ -44,7 +44,12 @@ async function getPhotos(credentialManager: GoogleCredentialManager) {
       method: "POST",
     },
   );
+
   const mediaItems = (await searchResponse.json()) as PhotoResponse;
+
+  if (!mediaItems.mediaItems) {
+    return [];
+  }
 
   let nextPageToken = mediaItems.nextPageToken;
 
@@ -72,7 +77,9 @@ async function getPhotos(credentialManager: GoogleCredentialManager) {
     );
     const nextPageItems = (await nextPageResponse.json()) as PhotoResponse;
 
-    allMediaItems.push(...nextPageItems.mediaItems);
+    if (nextPageItems.mediaItems) {
+      allMediaItems.push(...nextPageItems.mediaItems);
+    }
 
     nextPageToken = nextPageItems.nextPageToken;
   }

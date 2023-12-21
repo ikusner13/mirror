@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import path from "path";
 
 import { logger } from "../../logger";
 import { type StreamManager } from "../../stream";
@@ -7,6 +8,8 @@ import { type CurrentlyPlayingObject } from "./spotify.api";
 
 const tokenRefreshBase = "https://accounts.spotify.com";
 const userBase = "https://api.spotify.com";
+
+const TOKEN_PATH = path.join(process.cwd(), "spotify.json");
 
 type SpotifyCredentials = {
   accessToken: string;
@@ -148,7 +151,7 @@ export class SpotifyManager implements Module {
     }
 
     try {
-      const content = await fs.readFile("./spotify.json", "utf-8");
+      const content = await fs.readFile(TOKEN_PATH, "utf-8");
       const loadedCredentials = JSON.parse(content) as SpotifyCredentials;
 
       this.cachedCredentials = loadedCredentials;

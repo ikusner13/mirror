@@ -5,6 +5,7 @@ import { GoogleCredentialManager } from "../google-auth";
 
 export async function fetchAlbumIds() {
   const googleCredentialManager = new GoogleCredentialManager();
+  await googleCredentialManager.init();
   const token = await googleCredentialManager.getAccessToken();
 
   const albumResponse = await fetch(

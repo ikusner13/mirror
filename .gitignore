@@ -42,3 +42,4 @@ yarn-error.log*
 credentials.json
 token.json
 token-ian.json
+spotify.json

@@ -1,6 +1,9 @@
+import fs from "fs/promises";
 import { type Auth, google } from "googleapis";
+import path from "path";
+import process from "process";
 
-import { env } from "../env";
+const TOKEN_PATH = path.join(process.cwd(), "token.json");
 
 export class GoogleCredentialManager {
   constructor(private cachedCredentials: Auth.OAuth2Client | null = null) {}
@@ -27,22 +30,17 @@ export class GoogleCredentialManager {
     return this.cachedCredentials;
   }
 
-  init() {
+  async init() {
     if (this.cachedCredentials) {
       return;
     }
 
     try {
-      const oauth2Client = new google.auth.OAuth2({
-        clientId: env.GOOGLE__CLIENT_ID,
-        clientSecret: env.GOOGLE__CLIENT_SECRET,
-      });
-
-      oauth2Client.setCredentials({
-        refresh_token: env.GOOGLE__REFRESH_TOKEN,
-      });
-
-      this.cachedCredentials = oauth2Client;
+      const content = await fs.readFile(TOKEN_PATH, "utf-8");
+      const credentials = JSON.parse(content) as Auth.JWTInput;
+      this.cachedCredentials = google.auth.fromJSON(
+        credentials,
+      ) as Auth.OAuth2Client;
     } catch (err) {
       throw new Error("Failed to initialize: No credentials found");
     }
