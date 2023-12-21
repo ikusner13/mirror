@@ -1,5 +1,7 @@
 import fs from "fs/promises";
 
+import { type StreamManager } from "../../stream";
+import { type Module } from "../module";
 import { type CurrentlyPlayingObject } from "./spotify.api";
 
 const tokenRefreshBase = "https://accounts.spotify.com";
@@ -28,19 +30,21 @@ type GetMyPlayingTrackResponse = {
   };
 };
 
-class SpotifyManager {
+export class SpotifyManager implements Module {
   private cachedCredentials: SpotifyCredentials | null = null;
   private fetchDelay = 3000;
 
-  getCredentials = (): SpotifyCredentials => {
+  constructor(private streamManager: StreamManager) {}
+
+  getCredentials() {
     if (!this.cachedCredentials) {
       throw new Error("Spotify credentials not initialized");
     }
 
     return this.cachedCredentials;
-  };
+  }
 
-  getMyPlayingTrack = async () => {
+  async getMyPlayingTrack() {
     // get now playing data
     const nowPlayingData = await this.getNowPlayingData();
 
@@ -62,9 +66,9 @@ class SpotifyManager {
     // if track is playing, return track
     const item = nowPlayingData.item;
     return item as GetMyPlayingTrackResponse;
-  };
+  }
 
-  getNowPlayingData = async () => {
+  async getNowPlayingData() {
     if (!this.cachedCredentials) {
       throw new Error("Spotify credentials not initialized");
     }
@@ -108,9 +112,9 @@ class SpotifyManager {
     }
 
     return null;
-  };
+  }
 
-  getTrackLoop = (onSuccessCB: (track: GetMyPlayingTrackResponse) => void) => {
+  getTrackLoop(onSuccessCB: (track: GetMyPlayingTrackResponse) => void) {
     this.getMyPlayingTrack()
       .then((track) => {
         if (track) {
@@ -124,18 +128,18 @@ class SpotifyManager {
       .finally(() => {
         setTimeout(() => this.getTrackLoop(onSuccessCB), this.fetchDelay);
       });
-  };
+  }
 
-  handleTokenRefresh = async () => {
+  async handleTokenRefresh() {
     const data = await this.refreshAccessToken();
 
     if (this.cachedCredentials) {
       this.cachedCredentials.accessToken = data.access_token;
       this.cachedCredentials.expiresAt = Date.now() + data.expires_in * 1000;
     }
-  };
+  }
 
-  initialize = async (): Promise<void> => {
+  async init() {
     if (this.cachedCredentials) {
       return;
     }
@@ -150,9 +154,9 @@ class SpotifyManager {
     } catch (err) {
       throw new Error("Could not load Spotify credentials");
     }
-  };
+  }
 
-  refreshAccessToken = async () => {
+  async refreshAccessToken() {
     if (!this.cachedCredentials) {
       throw new Error("Spotify credentials not initialized");
     }
@@ -184,7 +188,11 @@ class SpotifyManager {
     } catch (error) {
       throw new Error("Could not refresh Spotify access token");
     }
-  };
-}
+  }
 
-export const spotifyManager = new SpotifyManager();
+  start() {
+    this.getTrackLoop((track) => {
+      this.streamManager.sendEvent("spotify", JSON.stringify(track));
+    });
+  }
+}

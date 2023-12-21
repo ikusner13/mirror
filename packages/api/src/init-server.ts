@@ -1,60 +1,42 @@
-import { type Server as HTTPServer, createServer } from "http";
+import { createServer } from "http";
 
-import { googleCredentialManager } from "./google-auth";
 import {
-  getPhoto,
-  getUpcomingEvents,
-  getWeather,
-  spotifyManager,
+  GoogleCalendar,
+  GooglePhotos,
+  SpotifyManager,
+  Weather,
 } from "./modules";
-import { createCronJob } from "./scheduler";
+import { GoogleCredentialManager } from "./modules/google-auth";
 import { StreamManager, createStream } from "./stream";
 
-const initializeModules = async () => {
-  // get credentials for google modules
-  await googleCredentialManager.initialize();
+async function initializeModules(streamManager: StreamManager) {
+  const googleCredentialManager = new GoogleCredentialManager();
 
-  // get spotify credentials setup
-  await spotifyManager.initialize();
-};
+  // instantiate modules
+  const googleCalendar = new GoogleCalendar(
+    streamManager,
+    googleCredentialManager,
+  );
+  const googlePhotos = new GooglePhotos(streamManager, googleCredentialManager);
+  const spotify = new SpotifyManager(streamManager);
+  const weather = new Weather(streamManager);
 
-const setupModuleEvents = (streamManager: StreamManager) => {
-  const weatherJob = createCronJob(async () => {
-    const weather = await getWeather();
+  // call init on modules
+  await googleCredentialManager.init();
 
-    streamManager.sendEvent("weather", JSON.stringify(weather));
-  }, `0 */${10} * * * *`);
+  await spotify.init();
+  await googleCalendar.init();
+  await googlePhotos.init();
+  await weather.init();
 
-  const calendarJob = createCronJob(async () => {
-    const events = await getUpcomingEvents();
+  // start modules
+  googleCalendar.start();
+  googlePhotos.start();
+  spotify.start();
+  weather.start();
+}
 
-    streamManager.sendEvent("calendar", JSON.stringify(events));
-  }, `0 */${15} * * * *`);
-
-  const photoJob = createCronJob(async () => {
-    const photo = await getPhoto();
-
-    streamManager.sendEvent("photo", JSON.stringify(photo));
-  }, "0 0 * * * *");
-
-  weatherJob.start();
-  photoJob.start();
-  calendarJob.start();
-
-  spotifyManager.getTrackLoop((track) => {
-    streamManager.sendEvent("spotify", JSON.stringify(track));
-  });
-};
-
-export const initServer = async (): Promise<HTTPServer> => {
-  const streamManager = new StreamManager();
-  await initializeModules();
-  const server = configureServer(streamManager);
-
-  return server;
-};
-
-const configureServer = (streamManager: StreamManager): HTTPServer => {
+function configureServer(streamManager: StreamManager) {
   const server = createServer((req, res) => {
     if (req.url === "/events") {
       const stream = createStream(req, res);
@@ -65,7 +47,13 @@ const configureServer = (streamManager: StreamManager): HTTPServer => {
     }
   });
 
-  setupModuleEvents(streamManager);
+  return server;
+}
+
+export async function initServer() {
+  const streamManager = new StreamManager();
+  await initializeModules(streamManager);
+  const server = configureServer(streamManager);
 
   return server;
-};
+}

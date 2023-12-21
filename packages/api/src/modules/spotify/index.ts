@@ -1,1 +1,1 @@
-export { spotifyManager } from "./spotify";
+export { SpotifyManager } from "./spotify";

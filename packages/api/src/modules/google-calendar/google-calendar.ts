@@ -1,9 +1,10 @@
+import { type CronJob } from "cron";
 import { google } from "googleapis";
 
-import {
-  type GoogleCredentialManager,
-  googleCredentialManager,
-} from "../../google-auth";
+import { createCronJob } from "../../scheduler";
+import { type StreamManager } from "../../stream";
+import { type GoogleCredentialManager } from "../google-auth";
+import { type Module } from "../module";
 
 async function listEvents(credentialManager: GoogleCredentialManager) {
   const auth = credentialManager.getCredentials();
@@ -37,8 +38,27 @@ async function listEvents(credentialManager: GoogleCredentialManager) {
   });
 }
 
-export async function getUpcomingEvents() {
-  const events = await listEvents(googleCredentialManager);
+export class GoogleCalendar implements Module {
+  private job: CronJob | null = null;
 
-  return events;
+  constructor(
+    private streamManager: StreamManager,
+    private credentialManager: GoogleCredentialManager,
+  ) {}
+
+  private createJob() {
+    return createCronJob(async () => {
+      const events = await listEvents(this.credentialManager);
+
+      this.streamManager.sendEvent("calendar", JSON.stringify(events));
+    }, `0 */${15} * * * *`);
+  }
+
+  async init() {
+    this.job = this.createJob();
+  }
+
+  start() {
+    this.job?.start();
+  }
 }

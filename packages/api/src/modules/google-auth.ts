@@ -6,7 +6,9 @@ import process from "process";
 const TOKEN_PATH = path.join(process.cwd(), "token.json");
 
 export class GoogleCredentialManager {
-  getAccessToken = async (): Promise<string> => {
+  constructor(private cachedCredentials: Auth.OAuth2Client | null = null) {}
+
+  async getAccessToken() {
     if (!this.cachedCredentials) {
       throw new Error("Credentials not initialized");
     }
@@ -18,19 +20,17 @@ export class GoogleCredentialManager {
     }
 
     return token.token;
-  };
+  }
 
-  getCredentials = (): Auth.OAuth2Client => {
+  getCredentials() {
     if (!this.cachedCredentials) {
       throw new Error("Credentials not initialized");
     }
 
     return this.cachedCredentials;
-  };
+  }
 
-  constructor(private cachedCredentials: Auth.OAuth2Client | null = null) {}
-
-  async initialize() {
+  async init() {
     if (this.cachedCredentials) {
       return;
     }
@@ -46,5 +46,3 @@ export class GoogleCredentialManager {
     }
   }
 }
-
-export const googleCredentialManager = new GoogleCredentialManager();

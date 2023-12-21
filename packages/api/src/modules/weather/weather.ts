@@ -1,3 +1,9 @@
+import { type CronJob } from "cron";
+
+import { createCronJob } from "../../scheduler";
+import { type StreamManager } from "../../stream";
+import { type Module } from "../module";
+
 const weatherApiKey = "b8d8163c79b9574cc193215f73d445c9";
 const ZIP = "43201";
 
@@ -74,4 +80,26 @@ export async function getWeather() {
   const weather = await fetchWeatherDetails();
 
   return weather;
+}
+
+export class Weather implements Module {
+  private job: CronJob | null = null;
+
+  constructor(private streamManager: StreamManager) {}
+
+  private createJob() {
+    return createCronJob(async () => {
+      const weather = await getWeather();
+
+      this.streamManager.sendEvent("weather", JSON.stringify(weather));
+    }, `0 */${10} * * * *`);
+  }
+
+  async init() {
+    this.job = this.createJob();
+  }
+
+  start() {
+    this.job?.start();
+  }
 }

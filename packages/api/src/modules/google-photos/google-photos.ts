@@ -1,9 +1,10 @@
+import { type CronJob } from "cron";
 import crypto from "crypto";
 
-import {
-  type GoogleCredentialManager,
-  googleCredentialManager,
-} from "../../google-auth";
+import { createCronJob } from "../../scheduler";
+import { type StreamManager } from "../../stream";
+import { type GoogleCredentialManager } from "../google-auth";
+import { type Module } from "../module";
 
 type PhotoResponse = {
   mediaItems: {
@@ -84,8 +85,35 @@ function getRandomPhoto(photoUrls: string[]) {
   return photoUrls[randomIndex]!;
 }
 
-export async function getPhoto() {
+export async function getPhoto(
+  googleCredentialManager: GoogleCredentialManager,
+) {
   const photos = await getPhotos(googleCredentialManager);
 
   return getRandomPhoto(photos);
+}
+
+export class GooglePhotos implements Module {
+  private job: CronJob | null = null;
+
+  constructor(
+    private streamManager: StreamManager,
+    private credentialManager: GoogleCredentialManager,
+  ) {}
+
+  private createJob() {
+    return createCronJob(async () => {
+      const photo = await getPhoto(this.credentialManager);
+
+      this.streamManager.sendEvent("photo", JSON.stringify(photo));
+    }, `0 */${15} * * * *`);
+  }
+
+  async init() {
+    this.job = this.createJob();
+  }
+
+  start() {
+    this.job?.start();
+  }
 }

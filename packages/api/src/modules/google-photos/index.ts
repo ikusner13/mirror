@@ -1,1 +1,1 @@
-export { getPhoto } from "./google-photos";
+export { GooglePhotos, getPhoto } from "./google-photos";
