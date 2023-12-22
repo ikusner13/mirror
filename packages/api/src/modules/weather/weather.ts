@@ -1,11 +1,12 @@
 import { type CronJob } from "cron";
 
+import { env } from "../../env";
 import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
 import { type Module } from "../module";
 
-const weatherApiKey = "b8d8163c79b9574cc193215f73d445c9";
+const weatherApiKey = env.WEATHER_API_KEY;
 const ZIP = "43201";
 
 const apiUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${ZIP},us&units=imperial&appid=${weatherApiKey}`;
@@ -86,18 +87,24 @@ export async function getWeather() {
 export class Weather implements Module {
   private job: CronJob | null = null;
 
-  constructor(private streamManager: StreamManager) {}
+  constructor(private streamManager: StreamManager) {
+    this.streamManager.onConnection(() => this.fetchAndSendEvents());
+  }
 
   private createJob() {
     return createCronJob(async () => {
-      const weather = await getWeather().catch((err) => {
+      await this.fetchAndSendEvents().catch((err) => {
         logger.error(err);
 
         return null;
       });
-
-      this.streamManager.sendEvent("weather", JSON.stringify(weather));
     }, `0 */${10} * * * *`);
+  }
+
+  async fetchAndSendEvents() {
+    const weather = await getWeather();
+
+    this.streamManager.sendEvent("weather", JSON.stringify(weather));
   }
 
   async init() {

@@ -98,6 +98,10 @@ export async function getPhoto(
 ) {
   const photos = await getPhotos(googleCredentialManager);
 
+  if (photos.length === 0) {
+    return null;
+  }
+
   return getRandomPhoto(photos);
 }
 
@@ -107,18 +111,30 @@ export class GooglePhotos implements Module {
   constructor(
     private streamManager: StreamManager,
     private credentialManager: GoogleCredentialManager,
-  ) {}
+  ) {
+    this.streamManager.onConnection(() => this.fetchAndSendEvents());
+  }
 
   private createJob() {
     return createCronJob(async () => {
-      const photo = await getPhoto(this.credentialManager).catch((err) => {
+      await this.fetchAndSendEvents().catch((err) => {
         logger.error(err);
 
         return null;
       });
-
-      this.streamManager.sendEvent("photo", JSON.stringify(photo));
     }, `0 */${15} * * * *`);
+  }
+
+  async fetchAndSendEvents(): Promise<void> {
+    const photo = await getPhoto(this.credentialManager);
+
+    if (!photo) {
+      return;
+    }
+
+    logger.info("Sending photo to clients", photo);
+
+    this.streamManager.sendEvent("photo", JSON.stringify(photo));
   }
 
   async init() {

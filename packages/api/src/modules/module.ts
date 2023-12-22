@@ -2,4 +2,5 @@
 export type Module = {
   init(): Promise<void>;
   start(): void;
+  fetchAndSendEvents(): Promise<void>;
 };

@@ -1,6 +1,8 @@
 import { type IncomingMessage, type ServerResponse } from "http";
 import { Readable } from "stream";
 
+import { logger } from "./logger";
+
 export function createStream(req: IncomingMessage, res: ServerResponse) {
   res.writeHead(200, {
     "Cache-Control": "no-cache",
@@ -29,13 +31,23 @@ export function sendEvent(stream: Readable, event: string, data: string) {
 }
 
 export class StreamManager {
+  onConnectionCallbacks: (() => Promise<void>)[] = [];
   constructor(private streams: Set<Readable> = new Set()) {}
 
   addStream(stream: Readable) {
     this.streams.add(stream);
+
+    Promise.all(this.onConnectionCallbacks.map((cb) => cb())).catch((error) => {
+      logger.error(error);
+    });
+
     stream.on("close", () => {
       this.streams.delete(stream);
     });
+  }
+
+  onConnection(callback: () => Promise<void>) {
+    this.onConnectionCallbacks.push(callback);
   }
 
   sendEvent(event: string, data: string) {

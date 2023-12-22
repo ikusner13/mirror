@@ -40,7 +40,13 @@ export class SpotifyManager implements Module {
   private cachedCredentials: SpotifyCredentials | null = null;
   private fetchDelay = 3000;
 
-  constructor(private streamManager: StreamManager) {}
+  constructor(private streamManager: StreamManager) {
+    this.streamManager.onConnection(() => this.fetchAndSendEvents());
+  }
+
+  fetchAndSendEvents(): Promise<void> {
+    return Promise.resolve();
+  }
 
   getCredentials() {
     if (!this.cachedCredentials) {

@@ -1,6 +1,7 @@
 /* eslint-disable n/no-process-exit */
 import { createServer } from "http";
 
+import { env } from "./env";
 import { logger } from "./logger";
 import {
   GoogleCalendar,
@@ -40,7 +41,10 @@ async function initializeModules(streamManager: StreamManager) {
 
 function configureServer(streamManager: StreamManager) {
   const server = createServer((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      `http://localhost:${env.CLIENT_PORT}`,
+    );
 
     if (req.url === "/events") {
       const stream = createStream(req, res);

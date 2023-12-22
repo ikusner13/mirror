@@ -1,13 +1,12 @@
 /* eslint-disable n/no-process-exit */
+import { env } from "./env";
 import { initServer } from "./init-server";
 import { logger } from "./logger";
 
-const port = process.env["PORT"] ?? 5000;
-
 initServer()
   .then((server) => {
-    server.listen(port, () => {
-      logger.info(`server listening on port ${port} 🚀`);
+    server.listen(env.API_PORT, () => {
+      logger.info(`server listening on port ${env.API_PORT} 🚀`);
     });
 
     process.on("SIGTERM", () => {

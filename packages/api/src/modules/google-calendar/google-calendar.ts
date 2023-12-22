@@ -53,14 +53,26 @@ export class GoogleCalendar implements Module {
   constructor(
     private streamManager: StreamManager,
     private credentialManager: GoogleCredentialManager,
-  ) {}
+  ) {
+    this.streamManager.onConnection(() => this.fetchAndSendEvents());
+  }
 
   private createJob() {
     return createCronJob(async () => {
-      const events = await listEvents(this.credentialManager);
+      await this.fetchAndSendEvents().catch((err) => {
+        calendarLogger.error(err);
 
-      this.streamManager.sendEvent("calendar", JSON.stringify(events));
+        return null;
+      });
     }, `0 */${15} * * * *`);
+  }
+
+  async fetchAndSendEvents() {
+    const events = await listEvents(this.credentialManager);
+
+    calendarLogger.info("Sending calendar events to clients", events);
+
+    this.streamManager.sendEvent("calendar", JSON.stringify(events));
   }
 
   async init() {
@@ -70,6 +82,7 @@ export class GoogleCalendar implements Module {
 
   start() {
     calendarLogger.info("Starting Google Calendar module");
+    // run job immediately
     this.job?.start();
   }
 }
