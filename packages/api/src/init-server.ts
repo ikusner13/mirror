@@ -10,7 +10,7 @@ import {
   Weather,
 } from "./modules";
 import { GoogleCredentialManager } from "./modules/google-auth";
-import { StreamManager, createStream } from "./stream";
+import { type StreamManager, createStream, streamManager } from "./stream";
 
 async function initializeModules(streamManager: StreamManager) {
   const googleCredentialManager = new GoogleCredentialManager();
@@ -59,7 +59,6 @@ function configureServer(streamManager: StreamManager) {
 }
 
 export async function initServer() {
-  const streamManager = new StreamManager();
   await initializeModules(streamManager).catch((error) => {
     logger.error(error);
 

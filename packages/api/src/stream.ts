@@ -3,6 +3,8 @@ import { Readable } from "stream";
 
 import { logger } from "./logger";
 
+const streamLogger = logger.child({ module: "stream" });
+
 export function createStream(req: IncomingMessage, res: ServerResponse) {
   res.writeHead(200, {
     "Cache-Control": "no-cache",
@@ -35,16 +37,31 @@ export class StreamManager {
   constructor(private streams: Set<Readable> = new Set()) {}
 
   addStream(stream: Readable) {
-    logger.info("New stream connected", stream);
+    streamLogger.info("New stream connected", stream);
     this.streams.add(stream);
 
     Promise.all(this.onConnectionCallbacks.map((cb) => cb())).catch((error) => {
-      logger.error(error);
+      streamLogger.error(error);
     });
 
     stream.on("close", () => {
+      streamLogger.info("Stream closed", stream);
       this.streams.delete(stream);
     });
+
+    stream.on("error", (error) => {
+      streamLogger.error(error);
+
+      stream.destroy();
+    });
+  }
+
+  closeAllStreams() {
+    this.streams.forEach((stream) => {
+      stream.destroy();
+    });
+
+    this.streams.clear();
   }
 
   onConnection(callback: () => Promise<void>) {
@@ -59,3 +76,21 @@ export class StreamManager {
 }
 
 export const streamManager = new StreamManager();
+
+process.on("uncaughtException", (error) => {
+  streamLogger.error(error);
+});
+
+process.on("unhandledRejection", (reason) => {
+  streamLogger.error(reason);
+});
+
+process.on("SIGTERM", () => {
+  streamLogger.info("SIGTERM");
+  streamManager.closeAllStreams();
+});
+
+process.on("SIGINT", () => {
+  streamLogger.info("SIGINT");
+  streamManager.closeAllStreams();
+});
