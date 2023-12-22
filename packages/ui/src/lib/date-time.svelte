@@ -1,49 +1,41 @@
 <script lang="ts">
   import dayjs from "dayjs";
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy } from "svelte";
 
-  let date = new Date();
   let currentDate = dayjs().format("DD/MM/YYYY");
-  // eslint-disable-next-line no-undef
-  let timeout: NodeJS.Timeout;
-  $: hour = date.getHours();
-  $: min = date.getMinutes();
-  $: sec = date.getSeconds();
-  let dayOrNight = "AM";
+  let currentHour = new Date().getHours();
+  let currentMin = new Date().getMinutes();
+  let currentSec = new Date().getSeconds();
+  let dayOrNight = currentHour >= 12 ? "PM" : "AM";
 
-  const updateDateAtMidNight = () => {
-    const now = dayjs();
-    const midnight = now.endOf("day");
-    const timeToMidnight = midnight.diff(now, "second");
+  // Update time every second
+  const updateTime = () => {
+    const now = new Date();
+    currentHour = now.getHours();
+    currentMin = now.getMinutes();
+    currentSec = now.getSeconds();
+    dayOrNight = currentHour >= 12 ? "PM" : "AM";
 
-    timeout = setTimeout(() => {
-      currentDate = dayjs().format("DD/MM/YYYY");
-      updateDateAtMidNight();
-    }, timeToMidnight * 1000);
+    // Check if date has changed
+    const newDate = dayjs().format("DD/MM/YYYY");
+    if (newDate !== currentDate) {
+      currentDate = newDate;
+    }
   };
 
-  onMount(() => {
-    const interval = setInterval(() => {
-      date = new Date();
-      dayOrNight = hour >= 12 ? "PM" : "AM";
-    }, 1000);
-
-    updateDateAtMidNight();
-
-    return () => clearInterval(interval);
-  });
+  let interval = setInterval(updateTime, 1000);
 
   onDestroy(() => {
-    clearTimeout(timeout);
+    clearInterval(interval);
   });
 </script>
 
 <section>
-  <div id="" class="clockWrapper">
+  <div class="clockWrapper">
     <p class="clockDisplay">
-      {hour < 12 ? hour : hour - 12}:{min < 10 ? `0${min}` : min}:{sec < 10
-        ? `0${sec}`
-        : sec}
+      {currentHour % 12 || 12}:{currentMin < 10
+        ? `0${currentMin}`
+        : currentMin}:{currentSec < 10 ? `0${currentSec}` : currentSec}
       {dayOrNight}
     </p>
     <p>

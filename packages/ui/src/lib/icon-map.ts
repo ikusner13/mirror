@@ -81,4 +81,4 @@ export const icons = {
   802: { "03d": Cloudy, "03n": Cloudy },
   803: { "04d": Cloud, "04n": Cloud },
   804: { "04d": Cloud, "04n": Cloud },
-};
+} as const;
