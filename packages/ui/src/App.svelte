@@ -46,44 +46,83 @@
 
 <style>
   main {
-    min-height: calc(100vh - 4rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Three columns */
+    grid-template-rows: auto 1fr auto; /* Three rows */
+    gap: 0.5rem;
     width: 100%;
     height: 100%;
-    position: relative;
-  }
-
-  main > section {
-    position: absolute;
-  }
-  .calendar {
-    bottom: 0;
-    left: 0;
   }
 
   .dateTime {
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    grid-column: 2 / 3; /* Center top */
+    grid-row: 1;
+  }
+
+  .calendar {
+    grid-column: 1 / 2; /* Bottom left */
+    grid-row: 3;
+    justify-self: start;
   }
 
   .weather {
-    bottom: 0;
-    right: 0;
+    grid-column: 3 / 4; /* Bottom right */
+    grid-row: 3;
+    justify-self: end;
+    align-self: end;
   }
 
   .photo {
-    top: 0;
-    left: 0;
+    grid-column: 1 / 2; /* Top left */
+    grid-row: 1;
+    justify-self: start;
   }
 
   .message {
-    top: 0;
-    right: 0;
+    grid-column: 3 / 4; /* Top right */
+    grid-row: 1;
   }
 
   .spotify {
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    grid-column: 2 / 3; /* Center bottom */
+    grid-row: 3;
+    align-self: end;
+  }
+
+  /* Optional: Responsive adjustments */
+  @media (max-width: 768px) {
+    main {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+    }
+
+    .dateTime,
+    .calendar,
+    .weather,
+    .photo,
+    .message,
+    .spotify {
+      grid-column: 1;
+    }
+
+    /* Adjust the order as needed */
+    .dateTime {
+      grid-row: 1;
+    }
+    .photo {
+      grid-row: 2;
+    }
+    .message {
+      grid-row: 3;
+    }
+    .calendar {
+      grid-row: 4;
+    }
+    .spotify {
+      grid-row: 5;
+    }
+    .weather {
+      grid-row: 6;
+    }
   }
 </style>

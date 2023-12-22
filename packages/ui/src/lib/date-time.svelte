@@ -3,9 +3,10 @@
   import { onDestroy } from "svelte";
 
   let currentDate = dayjs().format("DD/MM/YYYY");
-  let currentHour = new Date().getHours();
-  let currentMin = new Date().getMinutes();
-  let currentSec = new Date().getSeconds();
+  const now = new Date();
+  let currentHour = now.getHours();
+  let currentMin = now.getMinutes();
+  let currentSec = now.getSeconds();
   let dayOrNight = currentHour >= 12 ? "PM" : "AM";
 
   // Update time every second
