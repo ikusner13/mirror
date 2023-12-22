@@ -1,5 +1,10 @@
 <script lang="ts">
+  import { weatherStore } from "../store";
   import { icons } from "./icon-map";
+
+  weatherStore.subscribe((value) => {
+    console.log(value);
+  });
 
   const weather = {
     condition: "sunny",

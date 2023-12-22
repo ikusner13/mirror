@@ -2,7 +2,7 @@
 import { initServer } from "./init-server";
 import { logger } from "./logger";
 
-const port = process.env["PORT"] ?? 3001;
+const port = process.env["PORT"] ?? 5000;
 
 initServer()
   .then((server) => {

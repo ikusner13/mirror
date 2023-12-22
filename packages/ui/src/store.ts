@@ -1,19 +1,41 @@
 import { writable } from "svelte/store";
 
-const messageStore = writable("");
+export const messageStore = writable("");
+export const photosStore = writable([]);
+export const calendarStore = writable([]);
+export const spotifyStore = writable([]);
+export const weatherStore = writable([]);
 
-const socket = new WebSocket("ws://localhost:3001");
+// setup event source
+const eventSource = new EventSource("http://localhost:5000/events");
 
-// Connection opened
-socket.addEventListener("open", function (event) {
-  console.log("It's open");
+eventSource.addEventListener("spotify", (event) => {
+  console.log("spotify event", event);
+  const data = JSON.parse(event.data);
+  spotifyStore.set(data);
 });
 
-// Listen for messages
-socket.addEventListener("message", function (event) {
-  messageStore.set(event.data);
+eventSource.addEventListener("weather", (event) => {
+  const data = JSON.parse(event.data);
+  weatherStore.set(data);
 });
 
-export default {
-  subscribe: messageStore.subscribe,
+eventSource.addEventListener("calendar", (event) => {
+  const data = JSON.parse(event.data);
+  calendarStore.set(data);
+});
+
+eventSource.addEventListener("photo", (event) => {
+  const data = JSON.parse(event.data);
+  photosStore.set(data);
+});
+
+// Handle errors and cleanup
+eventSource.onerror = (error) => {
+  console.error("EventSource failed:", error);
+  eventSource.close();
+};
+
+export const closeEventSource = () => {
+  eventSource.close();
 };

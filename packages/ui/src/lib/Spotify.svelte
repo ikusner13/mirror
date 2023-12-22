@@ -1,5 +1,11 @@
 <script lang="ts">
   import { Mic2, Music4 } from "lucide-svelte";
+
+  import { spotifyStore } from "../store";
+
+  spotifyStore.subscribe((value) => {
+    console.log(value);
+  });
 </script>
 
 <section>

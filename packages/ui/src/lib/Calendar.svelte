@@ -1,7 +1,12 @@
 <script lang="ts">
   import { Cake, Calendar, Heart } from "lucide-svelte";
 
+  import { calendarStore } from "../store";
   import { getCalendarDisplay } from "./dayjs-calendar";
+
+  calendarStore.subscribe((value) => {
+    console.log(value);
+  });
 
   const calendarEvents = [
     {
@@ -23,18 +28,6 @@
     {
       dateTime: "2021-01-01T00:00:00.000Z",
       title: "My event",
-    },
-    {
-      dateTime: "2021-01-02T00:00:00.000Z",
-      title: "My event 2",
-    },
-    {
-      dateTime: "2021-01-01T00:00:00.000Z",
-      title: "My event",
-    },
-    {
-      dateTime: "2021-01-02T00:00:00.000Z",
-      title: "My event 2",
     },
   ];
 </script>

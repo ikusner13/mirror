@@ -40,6 +40,8 @@ async function initializeModules(streamManager: StreamManager) {
 
 function configureServer(streamManager: StreamManager) {
   const server = createServer((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+
     if (req.url === "/events") {
       const stream = createStream(req, res);
       streamManager.addStream(stream);

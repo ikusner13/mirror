@@ -1,4 +1,9 @@
 <script lang="ts">
+  import { photosStore } from "../store";
+
+  photosStore.subscribe((value) => {
+    console.log(value);
+  });
 </script>
 
 <section>

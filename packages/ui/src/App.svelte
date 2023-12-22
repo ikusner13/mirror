@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy } from "svelte";
 
   import Calendar from "./lib/Calendar.svelte";
   import Message from "./lib/Message.svelte";
@@ -7,14 +7,10 @@
   import Weather from "./lib/Weather.svelte";
   import DateTime from "./lib/date-time.svelte";
   import GooglePhoto from "./lib/google-photo.svelte";
-  import store from "./store.js";
+  import { closeEventSource } from "./store.js";
 
-  let messages = [];
-
-  onMount(() => {
-    store.subscribe((currentMessage) => {
-      messages = [...messages, currentMessage];
-    });
+  onDestroy(() => {
+    closeEventSource();
   });
 </script>
 
@@ -36,7 +32,7 @@
   </section>
 
   <section class="message">
-    <Message message="test" />
+    <Message />
   </section>
 
   <section class="spotify">
@@ -49,7 +45,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; /* Three columns */
     grid-template-rows: auto 1fr auto; /* Three rows */
-    gap: 0.5rem;
+    gap: 1rem;
     width: 100%;
     height: 100%;
   }
