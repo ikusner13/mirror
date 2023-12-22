@@ -65,6 +65,8 @@ type WeatherResponse = {
   weather?: string;
 };
 
+const weatherLogger = logger.child({ module: "weather" });
+
 async function fetchWeatherDetails() {
   const response = await fetch(apiUrl);
   const weather = (await response.json()) as OpenWeatherResponse;
@@ -74,6 +76,8 @@ async function fetchWeatherDetails() {
     temp: weather.main.temp,
     weather: weather.weather[0]?.main,
   } as WeatherResponse;
+
+  weatherLogger.info("got weather", data);
 
   return data;
 }
@@ -94,7 +98,7 @@ export class Weather implements Module {
   private createJob() {
     return createCronJob(async () => {
       await this.fetchAndSendEvents().catch((err) => {
-        logger.error(err);
+        weatherLogger.error(err);
 
         return null;
       });
@@ -108,10 +112,12 @@ export class Weather implements Module {
   }
 
   async init() {
+    weatherLogger.info("Initializing Weather module");
     this.job = this.createJob();
   }
 
   start() {
+    weatherLogger.info("Starting Weather module");
     this.job?.start();
   }
 }

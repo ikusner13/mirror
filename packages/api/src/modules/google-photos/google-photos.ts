@@ -21,10 +21,11 @@ type PhotoResponse = {
   nextPageToken?: string;
 };
 
+const photoLogger = logger.child({ module: "photos" });
+
 /**
  * @link https://developers.google.com/photos/library/guides/apply-filters?hl=en&authuser=1
  */
-
 const albumId =
   "AKcvZRwngYxfEg0WthniYt7tZG4BW3m5JKYYQGWUu7XNlFmTDcgqGqeK36lh1fF_AuOUTk01MAjc";
 
@@ -117,6 +118,7 @@ export class GooglePhotos implements Module {
 
   private createJob() {
     return createCronJob(async () => {
+      photoLogger.info("photo cron");
       await this.fetchAndSendEvents().catch((err) => {
         logger.error(err);
 
@@ -132,16 +134,17 @@ export class GooglePhotos implements Module {
       return;
     }
 
-    logger.info("Sending photo to clients", photo);
-
+    photoLogger.info("Sending photo to clients", photo);
     this.streamManager.sendEvent("photo", JSON.stringify(photo));
   }
 
   async init() {
+    photoLogger.info("Initializing Google Photos module");
     this.job = this.createJob();
   }
 
   start() {
+    photoLogger.info("Starting Google Photos module");
     this.job?.start();
   }
 }

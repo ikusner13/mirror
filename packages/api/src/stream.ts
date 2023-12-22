@@ -35,6 +35,7 @@ export class StreamManager {
   constructor(private streams: Set<Readable> = new Set()) {}
 
   addStream(stream: Readable) {
+    logger.info("New stream connected", stream);
     this.streams.add(stream);
 
     Promise.all(this.onConnectionCallbacks.map((cb) => cb())).catch((error) => {

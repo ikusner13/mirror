@@ -158,6 +158,8 @@ export class SpotifyManager implements Module {
       return;
     }
 
+    spotifyLogger.info("Initializing Spotify module");
+
     try {
       const content = await fs.readFile(TOKEN_PATH, "utf-8");
       const loadedCredentials = JSON.parse(content) as SpotifyCredentials;
@@ -200,11 +202,13 @@ export class SpotifyManager implements Module {
 
       throw new Error("Could not refresh Spotify access token");
     } catch (error) {
+      spotifyLogger.error(error);
       throw new Error("Could not refresh Spotify access token");
     }
   }
 
   start() {
+    spotifyLogger.info("Initializing Spotify module");
     this.getTrackLoop((track) => {
       this.streamManager.sendEvent("spotify", JSON.stringify(track));
     });

@@ -33,14 +33,18 @@ export async function listEvents(credentialManager: GoogleCredentialManager) {
       return [];
     }
 
-    return events.map((event) => {
-      return {
-        id: event.id,
-        kind: event.kind,
-        startDateTime: event.start?.dateTime,
-        summary: event.summary,
-      };
-    });
+    calendarLogger.info("got calendar events", events.length);
+
+    return events
+      .map((event) => {
+        return {
+          id: event.id,
+          kind: event.kind,
+          startDateTime: event.start?.dateTime,
+          summary: event.summary,
+        };
+      })
+      .slice(0, 5);
   } catch (error) {
     calendarLogger.error(error);
     return [];
@@ -59,6 +63,7 @@ export class GoogleCalendar implements Module {
 
   private createJob() {
     return createCronJob(async () => {
+      calendarLogger.info("calendar cron");
       await this.fetchAndSendEvents().catch((err) => {
         calendarLogger.error(err);
 
