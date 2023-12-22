@@ -6,7 +6,7 @@ import { type Auth, google } from "googleapis";
 import path from "path";
 import process from "process";
 
-import { logger } from "../../logger";
+import { logger } from "../logger";
 
 // If modifying these scopes, delete token.json.
 const SCOPES = [

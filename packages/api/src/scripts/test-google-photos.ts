@@ -1,6 +1,6 @@
-import { logger } from "../../logger";
-import { GoogleCredentialManager } from "../google-auth";
-import { getPhoto } from "./google-photos";
+import { logger } from "../logger";
+import { GoogleCredentialManager } from "../modules/google-auth";
+import { getPhoto } from "../modules/google-photos/google-photos";
 
 async function test() {
   const googleCredentialManager = new GoogleCredentialManager();

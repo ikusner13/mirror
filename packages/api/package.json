@@ -3,19 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "albumIds": "bun run ./src/modules/google-photos/fetch-album-ids.ts",
-    "authorize": "bun run ./src/modules/google-calendar/authorize.ts",
     "build": "tsc",
-    "calendar": "bun run ./src/modules/google-calendar/test-google-calendar.ts",
     "clean": "rm -rf dist",
     "dev": "dotenv -- nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
     "generate-message": "bun run ./src/modules/message/generate-message.ts",
-    "generate-spotify-types": "./node_modules/.bin/oazapfts --optimistic ./fixed-spotify-open-api.yml ./src/modules/spotify/spotify.api.ts",
+    "google:albumIds": "bun run ./src/scripts/fetch-album-ids.ts",
+    "google:authorize": "bun run ./src/scripts/authorize.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
-    "photos": "bun run ./src/modules/google-photos/test-google-photos.ts",
-    "spotify": "bun run ./src/modules/spotify/test-spotify.ts",
+    "spotify:types": "./node_modules/.bin/oazapfts --optimistic ./fixed-spotify-open-api.yml ./src/modules/spotify/spotify.api.ts",
     "start": "dotenv -- node -r esbuild-register ./src/index.ts",
-    "weather": "bun run ./src/modules/weather/test-weather.ts"
+    "test:calendar": "bun run ./src/scripts/test-google-calendar.ts",
+    "test:photos": "bun run ./src/scripts/test-google-photos.ts",
+    "test:spotify": "bun run ./src/scripts/test-spotify.ts",
+    "test:weather": "bun run ./src/scripts/test-weather.ts"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.0",

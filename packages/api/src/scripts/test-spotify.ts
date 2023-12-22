@@ -1,6 +1,6 @@
-import { logger } from "../../logger";
-import { type StreamManager } from "../../stream";
-import { SpotifyManager } from "./spotify";
+import { logger } from "../logger";
+import { SpotifyManager } from "../modules/spotify/spotify";
+import { type StreamManager } from "../stream";
 
 async function test() {
   const mockStreamManager = {} as StreamManager;
