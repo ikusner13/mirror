@@ -1,5 +1,6 @@
 import { type CronJob } from "cron";
 
+import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
 import { type Module } from "../module";
@@ -89,7 +90,11 @@ export class Weather implements Module {
 
   private createJob() {
     return createCronJob(async () => {
-      const weather = await getWeather();
+      const weather = await getWeather().catch((err) => {
+        logger.error(err);
+
+        return null;
+      });
 
       this.streamManager.sendEvent("weather", JSON.stringify(weather));
     }, `0 */${10} * * * *`);

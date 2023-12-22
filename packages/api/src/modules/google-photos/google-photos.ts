@@ -1,6 +1,7 @@
 import { type CronJob } from "cron";
 import crypto from "crypto";
 
+import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
 import { type GoogleCredentialManager } from "../google-auth";
@@ -110,7 +111,11 @@ export class GooglePhotos implements Module {
 
   private createJob() {
     return createCronJob(async () => {
-      const photo = await getPhoto(this.credentialManager);
+      const photo = await getPhoto(this.credentialManager).catch((err) => {
+        logger.error(err);
+
+        return null;
+      });
 
       this.streamManager.sendEvent("photo", JSON.stringify(photo));
     }, `0 */${15} * * * *`);

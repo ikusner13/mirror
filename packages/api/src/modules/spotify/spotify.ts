@@ -132,7 +132,9 @@ export class SpotifyManager implements Module {
         // You might want to retry after an error:
       })
       .finally(() => {
-        setTimeout(() => this.getTrackLoop(onSuccessCB), this.fetchDelay);
+        setTimeout(() => {
+          this.getTrackLoop(onSuccessCB);
+        }, this.fetchDelay);
       });
   }
 

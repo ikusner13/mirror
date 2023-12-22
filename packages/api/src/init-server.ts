@@ -1,5 +1,7 @@
+/* eslint-disable n/no-process-exit */
 import { createServer } from "http";
 
+import { logger } from "./logger";
 import {
   GoogleCalendar,
   GooglePhotos,
@@ -52,7 +54,11 @@ function configureServer(streamManager: StreamManager) {
 
 export async function initServer() {
   const streamManager = new StreamManager();
-  await initializeModules(streamManager);
+  await initializeModules(streamManager).catch((error) => {
+    logger.error(error);
+
+    process.exit(1);
+  });
   const server = configureServer(streamManager);
 
   return server;
