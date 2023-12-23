@@ -4,7 +4,7 @@ import path from "path";
 import { logger } from "../../logger";
 import { type StreamManager } from "../../stream";
 import { type Module } from "../module";
-import { type CurrentlyPlayingObject } from "./spotify.api";
+import { type CurrentlyPlayingObject, type TrackObject } from "./spotify.api";
 
 const tokenRefreshBase = "https://accounts.spotify.com";
 const userBase = "https://api.spotify.com";
@@ -26,12 +26,9 @@ type RefreshTokenResponse = {
   token_type: "Bearer";
 };
 
-type GetMyPlayingTrackResponse = {
-  is_playing: boolean;
-  item?: {
-    artistName: string;
-    songName: string;
-  };
+type SpotifyDTO = {
+  artist: string;
+  song: string;
 };
 
 const spotifyLogger = logger.child({ module: "spotify" });
@@ -75,9 +72,18 @@ export class SpotifyManager implements Module {
       return null;
     }
 
-    // if track is playing, return track
-    const item = nowPlayingData.item;
-    return item as GetMyPlayingTrackResponse;
+    // handle music track
+    //@ts-expect-error something is wrong with generated spotify types
+    if (nowPlayingData.item.type !== "TrackObject") {
+      const item = nowPlayingData.item as TrackObject;
+
+      return {
+        artist: item.artists?.map((artist) => artist.name).join(", "),
+        song: item.name,
+      } as SpotifyDTO;
+    }
+
+    return null;
   }
 
   async getNowPlayingData() {
@@ -126,7 +132,7 @@ export class SpotifyManager implements Module {
     return null;
   }
 
-  getTrackLoop(onSuccessCB: (track: GetMyPlayingTrackResponse) => void) {
+  getTrackLoop(onSuccessCB: (track: SpotifyDTO) => void) {
     this.getMyPlayingTrack()
       .then((track) => {
         if (track) {

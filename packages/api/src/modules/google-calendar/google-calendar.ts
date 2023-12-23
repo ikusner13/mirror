@@ -9,6 +9,13 @@ import { type Module } from "../module";
 
 const calendarLogger = logger.child({ module: "calendar" });
 
+type CalendarDTO = {
+  id: string;
+  kind: string;
+  startDateTime: string;
+  summary: string;
+};
+
 export async function listEvents(credentialManager: GoogleCredentialManager) {
   const auth = credentialManager.getCredentials();
 
@@ -44,7 +51,7 @@ export async function listEvents(credentialManager: GoogleCredentialManager) {
           summary: event.summary,
         };
       })
-      .slice(0, 5);
+      .slice(0, 5) as CalendarDTO[];
   } catch (error) {
     calendarLogger.error(error);
     return [];
