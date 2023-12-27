@@ -45,9 +45,19 @@ importers:
 
   apps/electron:
     dependencies:
+      api:
+        specifier: workspace:*
+        version: link:../../packages/api
       electron:
         specifier: ^28.1.0
         version: 28.1.0
+      ui:
+        specifier: workspace:*
+        version: link:../../packages/ui
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
 
   packages/api:
     dependencies:

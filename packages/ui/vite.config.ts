@@ -7,4 +7,8 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    outDir: "../../apps/electron/ui-dist",
+    emptyOutDir: true,
+  },
 });
