@@ -1,15 +1,17 @@
 <script lang="ts">
-  import { weatherStore } from "../store";
+  import { type WeatherResponse, weatherStore } from "../store";
   import { icons } from "./icon-map";
 
+  let weather: WeatherResponse = {
+    feelsLike: 0,
+    temp: 0,
+    weather: "weather",
+  };
+
   weatherStore.subscribe((value) => {
-    console.log(value);
+    weather = value;
   });
 
-  const weather = {
-    condition: "sunny",
-    temp: 80,
-  };
   const Icon = icons[200]["11d"];
 </script>
 
@@ -21,7 +23,7 @@
         {Math.round(Number(weather.temp))}&deg;
       </span>
     </div>
-    <span class="weather-condition">{weather.condition}</span>
+    <span class="weather-condition">{weather.weather}</span>
   </div>
 </section>
 

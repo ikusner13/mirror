@@ -2,7 +2,7 @@
   import dayjs from "dayjs";
   import { onDestroy } from "svelte";
 
-  let currentDate = dayjs().format("DD/MM/YYYY");
+  let currentDate = dayjs().format("MM/DD/YYYY");
   const now = new Date();
   let currentHour = now.getHours();
   let currentMin = now.getMinutes();
@@ -18,7 +18,7 @@
     dayOrNight = currentHour >= 12 ? "PM" : "AM";
 
     // Check if date has changed
-    const newDate = dayjs().format("DD/MM/YYYY");
+    const newDate = dayjs().format("MM/DD/YYYY");
     if (newDate !== currentDate) {
       currentDate = newDate;
     }

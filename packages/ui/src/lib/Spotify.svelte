@@ -1,24 +1,33 @@
 <script lang="ts">
   import { Mic2, Music4 } from "lucide-svelte";
 
-  import { spotifyStore } from "../store";
+  import { type SpotifyDTO, spotifyStore } from "../store";
+
+  let spotifyInfo: SpotifyDTO = {
+    artist: "",
+    song: "",
+  };
 
   spotifyStore.subscribe((value) => {
-    console.log(value);
+    spotifyInfo = value;
   });
 </script>
 
 <section>
-  <div class="songInfo">
-    <div class="flex-center">
-      <Music4 size="1em" />
-      <span>Song Title</span>
+  {#if spotifyInfo.song === "" && spotifyInfo.artist === ""}
+    <div></div>
+  {:else}
+    <div class="songInfo">
+      <div class="flex-center">
+        <Music4 size="1em" />
+        <span>{spotifyInfo.song}</span>
+      </div>
+      <div class="flex-center">
+        <Mic2 size="1em" />
+        <span>{spotifyInfo.artist}</span>
+      </div>
     </div>
-    <div class="flex-center">
-      <Mic2 size="1em" />
-      <span>Artist</span>
-    </div>
-  </div>
+  {/if}
 </section>
 
 <style>

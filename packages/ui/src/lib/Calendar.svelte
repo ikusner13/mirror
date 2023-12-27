@@ -1,49 +1,33 @@
 <script lang="ts">
   import { Cake, Calendar, Heart } from "lucide-svelte";
 
-  import { calendarStore } from "../store";
+  import { type CalendarDTO, calendarStore } from "../store";
   import { getCalendarDisplay } from "./dayjs-calendar";
 
-  calendarStore.subscribe((value) => {
-    console.log(value);
-  });
+  let calendarEvents: CalendarDTO[] = [];
 
-  const calendarEvents = [
-    {
-      dateTime: "2023-09-02T00:00:00.000Z",
-      title: "My event",
-    },
-    {
-      dateTime: "2021-01-02T00:00:00.000Z",
-      title: "My event 2",
-    },
-    {
-      dateTime: "2021-01-01T00:00:00.000Z",
-      title: "My event",
-    },
-    {
-      dateTime: "2021-01-02T00:00:00.000Z",
-      title: "My event 2",
-    },
-    {
-      dateTime: "2021-01-01T00:00:00.000Z",
-      title: "My event",
-    },
-  ];
+  calendarStore.subscribe((value) => {
+    calendarEvents = value;
+  });
 </script>
 
 <div class="events-container">
+  {#if calendarEvents.length === 0}
+    <div>
+      <span> No upcoming events </span>
+    </div>
+  {/if}
   {#each calendarEvents as calendarEvent}
     <div>
       <div class="event-item">
         <Calendar size="1em" />
         <span>
-          {calendarEvent.title}
+          {calendarEvent.summary}
         </span>
       </div>
       <div>
         <span class="date">
-          {getCalendarDisplay(calendarEvent.dateTime)}
+          {getCalendarDisplay(calendarEvent.startDateTime)}
         </span>
       </div>
     </div>

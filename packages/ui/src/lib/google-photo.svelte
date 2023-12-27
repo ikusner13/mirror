@@ -1,16 +1,15 @@
 <script lang="ts">
   import { photosStore } from "../store";
 
+  let photoUrl = "";
+
   photosStore.subscribe((value) => {
-    console.log(value);
+    photoUrl = value;
   });
 </script>
 
 <section>
-  <img
-    alt="test"
-    src="https://fastly.picsum.photos/id/566/300/300.jpg?hmac=StxqNDztcSx2Ih1d__-ZobUxowXpIgctHFxedI3cz4s"
-  />
+  <img alt="test" src={photoUrl} />
 </section>
 
 <style>

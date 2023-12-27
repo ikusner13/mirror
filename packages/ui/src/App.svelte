@@ -84,41 +84,4 @@
     grid-row: 3;
     align-self: end;
   }
-
-  /* Optional: Responsive adjustments */
-  @media (max-width: 768px) {
-    main {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(6, auto);
-    }
-
-    .dateTime,
-    .calendar,
-    .weather,
-    .photo,
-    .message,
-    .spotify {
-      grid-column: 1;
-    }
-
-    /* Adjust the order as needed */
-    .dateTime {
-      grid-row: 1;
-    }
-    .photo {
-      grid-row: 2;
-    }
-    .message {
-      grid-row: 3;
-    }
-    .calendar {
-      grid-row: 4;
-    }
-    .spotify {
-      grid-row: 5;
-    }
-    .weather {
-      grid-row: 6;
-    }
-  }
 </style>
