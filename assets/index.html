@@ -146,4 +146,46 @@
     grid-row: 3;
     align-self: end;
   }
+
+  .marquee {
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    position: absolute;
+    max-width: 30ch;
+  }
+
+  .marquee span.move {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+
+  .marquee2 span.move {
+    display: inline-block;
+    animation: marquee2 20s linear infinite;
+  }
+
+  @keyframes marquee2 {
+    0%,
+    10% {
+      transform: translate(110%, 0);
+    }
+
+    90%,
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes marquee {
+    0%,
+    10% {
+      transform: translate(0, 0);
+    }
+
+    90%,
+    100% {
+      transform: translate(-110%, 0);
+    }
+  }
 </style>

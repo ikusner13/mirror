@@ -54,7 +54,7 @@ function configureServer(streamManager: StreamManager) {
     } else if (req.url === "/") {
       res.writeHead(200, { "Content-Type": "text/html" });
       const file = fs.createReadStream(
-        path.join(process.cwd(), "./server/assets/index.html"),
+        path.join(process.cwd(), "./assets/index.html"),
       );
 
       file.pipe(res);

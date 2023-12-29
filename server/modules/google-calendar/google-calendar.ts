@@ -104,18 +104,25 @@ export class GoogleCalendar implements Module {
     }
 
     const eventList = events.map((event) => {
-      return html`<li>
+      return html`<div>
+      <div class="flex gap-2 items-center">
+      <i class="ri-calendar-event-line"></i>
       <p>
       ${event.summary}
-      </strong>
-      <br />
-      <p>
+      </p>
+      </div>
+      <div>
+      <p class="text-sm">
       ${this.formatCalendarDisplay(event.startDateTime)}
       </p>
+      </div>
       </li>`;
     });
 
-    this.streamManager.sendEvent("calendar", `<ul>${eventList.join("")}</ul>`);
+    this.streamManager.sendEvent(
+      "calendar",
+      `<div class="flex flex-col gap-4">${eventList.join("")}</div>`,
+    );
   }
 
   async init() {
