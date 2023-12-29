@@ -48,12 +48,12 @@ importers:
       api:
         specifier: workspace:*
         version: link:../../packages/api
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       electron:
         specifier: ^28.1.0
         version: 28.1.0
-      ui:
-        specifier: workspace:*
-        version: link:../../packages/ui
     devDependencies:
       typescript:
         specifier: ^5.3.3

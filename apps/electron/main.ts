@@ -1,5 +1,6 @@
 import { app, BrowserWindow, screen } from "electron";
 import * as path from "path";
+// import { initServer } from "../../packages/api/dist/init-server";
 import { initServer } from "api";
 
 function createWindow() {
@@ -24,7 +25,7 @@ function createWindow() {
   });
 
   // load frontend app
-  // mainWindow.loadURL;
+  mainWindow.loadURL(path.join(__dirname, "./ui-dist/index.html"));
 }
 
 //app handlers
@@ -43,6 +44,12 @@ app.on("before-quit", (event) => {
   //TODO: manually stop server
 
   process.exit(0);
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 initServer().then((server) => {

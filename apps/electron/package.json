@@ -7,12 +7,14 @@
   "author": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "electron ./dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "api": "workspace:*",
-    "electron": "^28.1.0",
-    "ui": "workspace:*"
+    "dotenv": "^16.3.1",
+    "electron": "^28.1.0"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
