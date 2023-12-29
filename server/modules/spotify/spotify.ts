@@ -216,7 +216,10 @@ export class SpotifyManager implements Module {
   start() {
     spotifyLogger.info("Initializing Spotify module");
     this.getTrackLoop((track) => {
-      this.streamManager.sendEvent("spotify", JSON.stringify(track));
+      const artist = track.artist;
+      const song = track.song;
+      const html = `<div class="songInfo"><div class="flex-center"><span>${song}</span></div><div class="flex-center"><span>${artist}</span></div></div>`;
+      this.streamManager.sendEvent("spotify", html);
     });
   }
 }

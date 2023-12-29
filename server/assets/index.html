@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMX-EXPRESS DEMO</title>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.10"
+      integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div hx-sse="connect:/events" class="main">
+      <div hx-sse="swap:photo" class="top-left"></div>
+      <div class="top-center">
+        <p id="time"></p>
+        <p id="date"></p>
+      </div>
+      <div class="top-right">test message</div>
+      <div class="bottom-left" hx-sse="swap:calendar"></div>
+      <div hx-sse="swap:spotify" class="bottom-center"></div>
+      <div class="bottom-right" hx-sse="swap:weather"></div>
+    </div>
+  </body>
+</html>
+
+<script>
+  function clock() {
+    const today = new Date();
+
+    const hours = today.getHours();
+    const minutes = today.getMinutes();
+    const seconds = today.getSeconds();
+
+    const hour = hours < 10 ? "0" + hours : hours;
+    const minute = minutes < 10 ? "0" + minutes : minutes;
+    const second = seconds < 10 ? "0" + seconds : seconds;
+
+    const hourTime = hour > 12 ? hour - 12 : hour;
+
+    const ampm = hour < 12 ? "AM" : "PM";
+
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    const day = today.getDate();
+
+    const monthList = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const date = monthList[month] + " " + day + ", " + year;
+    const time = hourTime + ":" + minute + ":" + second + ampm;
+
+    document.getElementById("time").innerHTML = time;
+    document.getElementById("date").innerHTML = date;
+    setTimeout(clock, 1000);
+  }
+
+  clock();
+</script>
+
+<style>
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: transparent;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    display: flex;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Three columns */
+    grid-template-rows: auto 1fr auto; /* Three rows */
+    gap: 1rem;
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .top-center {
+    grid-column: 2 / 3; /* Center top */
+    grid-row: 1;
+  }
+
+  .bottom-left {
+    grid-column: 1 / 2; /* Bottom left */
+    grid-row: 3;
+    justify-self: start;
+  }
+
+  .bottom-right {
+    grid-column: 3 / 4; /* Bottom right */
+    grid-row: 3;
+    justify-self: end;
+    align-self: end;
+  }
+
+  .top-left {
+    grid-column: 1 / 2; /* Top left */
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  .top-right {
+    grid-column: 3 / 4; /* Top right */
+    grid-row: 1;
+  }
+
+  .bottom-center {
+    grid-column: 2 / 3; /* Center bottom */
+    grid-row: 3;
+    align-self: end;
+  }
+</style>

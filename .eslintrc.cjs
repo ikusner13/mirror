@@ -10,6 +10,7 @@ const config = {
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:perfectionist/recommended-natural",
+    "plugin:n/recommended",
     "prettier",
   ],
   ignorePatterns: [
@@ -32,6 +33,7 @@ const config = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
+    "n/no-missing-import": "off",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "@typescript-eslint/consistent-type-imports": [
       "warn",

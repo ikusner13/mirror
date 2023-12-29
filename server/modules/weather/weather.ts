@@ -108,7 +108,13 @@ export class Weather implements Module {
   async fetchAndSendEvents() {
     const weather = await getWeather();
 
-    this.streamManager.sendEvent("weather", JSON.stringify(weather));
+    const html = `<div class="condition"><div class="weather-row"><span>${Math.round(
+      Number(weather.temp),
+    )}&deg;</span></div><span class="weather-condition">${
+      weather.weather
+    }</span></div>`;
+
+    this.streamManager.sendEvent("weather", html);
   }
 
   async init() {

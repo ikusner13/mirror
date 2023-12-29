@@ -135,7 +135,7 @@ export class GooglePhotos implements Module {
     }
 
     photoLogger.info("Sending photo to clients", photo);
-    this.streamManager.sendEvent("photo", JSON.stringify(photo));
+    this.streamManager.sendEvent("photo", `<img src=${photo} />`);
   }
 
   async init() {

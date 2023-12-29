@@ -1,5 +1,0 @@
-packages:
-  - "apps/electron"
-  - "packages/config/*"
-  - "packages/api"
-  - "packages/ui"

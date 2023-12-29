@@ -1,4 +1,6 @@
 import { type CronJob } from "cron";
+import dayjs from "dayjs";
+import calendar from "dayjs/plugin/calendar";
 import { google } from "googleapis";
 
 import { logger } from "../../logger";
@@ -6,6 +8,8 @@ import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
 import { type GoogleCredentialManager } from "../google-auth";
 import { type Module } from "../module";
+
+dayjs.extend(calendar);
 
 const calendarLogger = logger.child({ module: "calendar" });
 
@@ -79,12 +83,34 @@ export class GoogleCalendar implements Module {
     }, `0 */${15} * * * *`);
   }
 
+  private formatCalendarDisplay(date: Date | string) {
+    return dayjs(date).calendar(null, {
+      nextDay: "[Tomorrow at] HH:mm A",
+      nextWeek: "dddd",
+      sameDay: "[Today at] HH:mm A",
+      sameElse: "MM/DD/YYYY",
+    });
+  }
+
   async fetchAndSendEvents() {
     const events = await listEvents(this.credentialManager);
 
     calendarLogger.info("Sending calendar events to clients", events);
 
-    this.streamManager.sendEvent("calendar", JSON.stringify(events));
+    if (events.length === 0) {
+      this.streamManager.sendEvent("calendar", "No events found");
+      return;
+    }
+
+    const eventList = events.map((event) => {
+      return `<li><p>${
+        event.summary
+      }</strong><br /><p>${this.formatCalendarDisplay(
+        event.startDateTime,
+      )}</p></li>`;
+    });
+
+    this.streamManager.sendEvent("calendar", `<ul>${eventList.join("")}</ul>`);
   }
 
   async init() {

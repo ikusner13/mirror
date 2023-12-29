@@ -1,5 +1,7 @@
 /* eslint-disable n/no-process-exit */
-import { createServer } from "http";
+import * as fs from "node:fs";
+import { createServer } from "node:http";
+import * as path from "node:path";
 
 import { env } from "./env";
 import { logger } from "./logger";
@@ -49,6 +51,13 @@ function configureServer(streamManager: StreamManager) {
     if (req.url === "/events") {
       const stream = createStream(req, res);
       streamManager.addStream(stream);
+    } else if (req.url === "/") {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      const file = fs.createReadStream(
+        path.join(process.cwd(), "./server/assets/index.html"),
+      );
+
+      file.pipe(res);
     } else {
       res.writeHead(404);
       res.end();
