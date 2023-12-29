@@ -3,6 +3,7 @@ import path from "path";
 
 import { logger } from "../../logger";
 import { type StreamManager } from "../../stream";
+import { html } from "../../utils";
 import { type Module } from "../module";
 import { type CurrentlyPlayingObject, type TrackObject } from "./spotify.api";
 
@@ -218,8 +219,17 @@ export class SpotifyManager implements Module {
     this.getTrackLoop((track) => {
       const artist = track.artist;
       const song = track.song;
-      const html = `<div class="songInfo"><div class="flex-center"><span>${song}</span></div><div class="flex-center"><span>${artist}</span></div></div>`;
-      this.streamManager.sendEvent("spotify", html);
+      const htmlString = html`<div>
+        <div class="flex flex col place-items-center gap-2">
+          <i class="ri-headphone-line"></i>
+          <span>${song}</span>
+        </div>
+        <div class="flex flex col place-items-center gap-2">
+          <i class="ri-album-line"></i>
+          <span>${artist}</span>
+        </div>
+      </div>`;
+      this.streamManager.sendEvent("spotify", htmlString);
     });
   }
 }

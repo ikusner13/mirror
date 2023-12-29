@@ -4,7 +4,9 @@ import { env } from "../../env";
 import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
+import { html } from "../../utils";
 import { type Module } from "../module";
+import { icons } from "./icon-map";
 
 const weatherApiKey = env.WEATHER_API_KEY;
 const ZIP = "43201";
@@ -61,6 +63,7 @@ type OpenWeatherResponse = {
 
 type WeatherResponse = {
   feelsLike?: number;
+  icon: string;
   temp?: number;
   weather?: string;
 };
@@ -73,6 +76,9 @@ async function fetchWeatherDetails() {
 
   const data = {
     feelsLike: weather.main.feels_like,
+    // @ts-expect-error TODO: get around to typing this better
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    icon: icons[weather.weather[0]?.id ?? 800][weather.weather[0]?.icon ?? ""],
     temp: weather.main.temp,
     weather: weather.weather[0]?.main,
   } as WeatherResponse;
@@ -108,13 +114,15 @@ export class Weather implements Module {
   async fetchAndSendEvents() {
     const weather = await getWeather();
 
-    const html = `<div class="condition"><div class="weather-row"><span>${Math.round(
-      Number(weather.temp),
-    )}&deg;</span></div><span class="weather-condition">${
-      weather.weather
-    }</span></div>`;
+    const htmlString = html`<div>
+      <div class="flex items-center gap-2">
+        <i class=${weather.icon}></i>
+        <span>${Math.round(Number(weather.temp))}&deg;</span>
+      </div>
+      <span class="flex justify-end">${weather.weather}</span>
+    </div>`;
 
-    this.streamManager.sendEvent("weather", html);
+    this.streamManager.sendEvent("weather", htmlString);
   }
 
   async init() {

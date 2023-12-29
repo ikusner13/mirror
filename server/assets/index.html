@@ -3,24 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTMX-EXPRESS DEMO</title>
+    <title>Mirror</title>
     <script
       src="https://unpkg.com/htmx.org@1.9.10"
       integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div hx-sse="connect:/events" class="main">
       <div hx-sse="swap:photo" class="top-left"></div>
-      <div class="top-center">
+      <div class="top-center flex flex-col place-items-center">
         <p id="time"></p>
         <p id="date"></p>
       </div>
       <div class="top-right">test message</div>
       <div class="bottom-left" hx-sse="swap:calendar"></div>
-      <div hx-sse="swap:spotify" class="bottom-center"></div>
+      <div
+        hx-sse="swap:spotify"
+        class="bottom-center flex flex-col place-items-center text-center"
+      ></div>
       <div class="bottom-right" hx-sse="swap:weather"></div>
     </div>
   </body>
@@ -61,8 +68,8 @@
       "December",
     ];
 
-    const date = monthList[month] + " " + day + ", " + year;
-    const time = hourTime + ":" + minute + ":" + second + ampm;
+    const date = `${monthList[month]} ${day}, ${year}`;
+    const time = `${hourTime}:${minute}:${second} ${ampm}`;
 
     document.getElementById("time").innerHTML = time;
     document.getElementById("date").innerHTML = date;
@@ -113,6 +120,7 @@
     grid-column: 1 / 2; /* Bottom left */
     grid-row: 3;
     justify-self: start;
+    align-self: end;
   }
 
   .bottom-right {

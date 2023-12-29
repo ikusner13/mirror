@@ -6,6 +6,7 @@ import { google } from "googleapis";
 import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
+import { html } from "../../utils";
 import { type GoogleCredentialManager } from "../google-auth";
 import { type Module } from "../module";
 
@@ -103,11 +104,15 @@ export class GoogleCalendar implements Module {
     }
 
     const eventList = events.map((event) => {
-      return `<li><p>${
-        event.summary
-      }</strong><br /><p>${this.formatCalendarDisplay(
-        event.startDateTime,
-      )}</p></li>`;
+      return html`<li>
+      <p>
+      ${event.summary}
+      </strong>
+      <br />
+      <p>
+      ${this.formatCalendarDisplay(event.startDateTime)}
+      </p>
+      </li>`;
     });
 
     this.streamManager.sendEvent("calendar", `<ul>${eventList.join("")}</ul>`);
