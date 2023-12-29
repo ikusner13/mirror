@@ -115,11 +115,14 @@ export class Weather implements Module {
     const weather = await getWeather();
 
     const htmlString = html`<div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 justify-end">
         <i class=${weather.icon}></i>
         <span>${Math.round(Number(weather.temp))}&deg;</span>
       </div>
       <span class="flex justify-end">${weather.weather}</span>
+      <span class="flex justify-end"
+        >Feels like ${Math.round(Number(weather.feelsLike))}&deg;</span
+      >
     </div>`;
 
     this.streamManager.sendEvent("weather", htmlString);

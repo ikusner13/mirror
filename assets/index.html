@@ -17,7 +17,10 @@
   </head>
   <body>
     <div hx-sse="connect:/events" class="main">
-      <div hx-sse="swap:photo" class="top-left"></div>
+      <div
+        hx-sse="swap:photo"
+        class="top-left object-contain w-full h-[300px]"
+      ></div>
       <div class="top-center flex flex-col place-items-center">
         <p id="time"></p>
         <p id="date"></p>
