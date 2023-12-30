@@ -47,3 +47,6 @@ spotify.json
 # python
 __pycache__/
 venv/
+
+#ts
+*.tsbuildinfo
