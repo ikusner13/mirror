@@ -5,7 +5,6 @@ const config = {
     node: true,
   },
   extends: [
-    "turbo",
     "eslint:recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
@@ -13,12 +12,7 @@ const config = {
     "plugin:n/recommended",
     "prettier",
   ],
-  ignorePatterns: [
-    "**/.eslintrc.cjs",
-    "packages/config/**",
-    "dist",
-    "pnpm-lock.yaml",
-  ],
+  ignorePatterns: ["**/.eslintrc.cjs", "dist", "bun.lockb"],
   overrides: [
     {
       files: ["**/*.cjs"],

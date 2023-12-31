@@ -2,20 +2,21 @@
   "name": "mirror",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "dev": "dotenv -- nodemon --exec \"node -r esbuild-register ./server/index.ts\" -e .ts",
-    "generate-message": "bun run ./server/modules/message/generate-message.ts",
-    "google:albumIds": "bun run ./server/scripts/fetch-album-ids.ts",
-    "google:authorize": "bun run ./server/scripts/authorize.ts",
+    "dev": "bun --watch ./server/index.ts",
+    "generate-message": "bun ./server/modules/message/generate-message.ts",
+    "google:albumIds": "bun ./server/scripts/fetch-album-ids.ts",
+    "google:authorize": "bun ./server/scripts/authorize.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
     "spotify:types": "./node_modules/.bin/oazapfts --optimistic ./fixed-spotify-open-api.yml ./server/modules/spotify/spotify.api.ts",
-    "start": "dotenv -- node ./dist/server/index.js",
-    "test:calendar": "bun run ./server/scripts/test-google-calendar.ts",
-    "test:photos": "bun run ./server/scripts/test-google-photos.ts",
-    "test:spotify": "bun run ./server/scripts/test-spotify.ts",
-    "test:weather": "bun run ./server/scripts/test-weather.ts"
+    "start": "bun ./dist/server/index.js",
+    "test:calendar": "bun ./server/scripts/test-google-calendar.ts",
+    "test:photos": "bun ./server/scripts/test-google-photos.ts",
+    "test:spotify": "bun ./server/scripts/test-spotify.ts",
+    "test:weather": "bun ./server/scripts/test-weather.ts"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.0",
@@ -24,20 +25,19 @@
     "cron": "^3.1.6",
     "dayjs": "^1.11.10",
     "dotenv-cli": "^7.3.0",
-    "eslint": "^8.56.0",
     "googleapis": "^129.0.0",
     "openai": "^3.3.0",
     "pino": "^8.17.1",
     "pino-pretty": "^10.3.0",
     "prettier": "^2.8.8",
     "prettier-plugin-packagejson": "^2.4.7",
-    "typescript": "^5.3.3",
     "ws": "^8.15.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/body-parser": "^1.19.5",
+    "@types/bun": "latest",
     "@types/cors": "^2.8.17",
     "@types/eslint": "^8.56.0",
     "@types/node": "^20.10.5",
@@ -55,7 +55,6 @@
     "oazapfts": "^4.12.0",
     "typescript": "^5.3.3"
   },
-  "packageManager": "pnpm@8.6.9",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
