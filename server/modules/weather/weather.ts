@@ -109,8 +109,6 @@ export class Weather implements Module {
 
     const html = generateWeatherHTML(weather);
 
-    console.log("weather", html);
-
     this.streamManager.sendEvent("weather", html);
   }
 

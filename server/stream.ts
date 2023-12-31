@@ -1,4 +1,4 @@
-import { type IncomingMessage, type ServerResponse } from "http";
+import { type IncomingMessage, type ServerResponse } from "node:http";
 import { Readable } from "stream";
 
 import { logger } from "./logger";

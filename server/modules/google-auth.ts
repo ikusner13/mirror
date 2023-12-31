@@ -1,9 +1,4 @@
-import fs from "fs/promises";
 import { type Auth, google } from "googleapis";
-import path from "path";
-import process from "process";
-
-const TOKEN_PATH = path.join(process.cwd(), "token.json");
 
 export class GoogleCredentialManager {
   constructor(private cachedCredentials: Auth.OAuth2Client | null = null) {}
@@ -36,8 +31,7 @@ export class GoogleCredentialManager {
     }
 
     try {
-      const content = await fs.readFile(TOKEN_PATH, "utf-8");
-      const credentials = JSON.parse(content) as Auth.JWTInput;
+      const credentials = await Bun.file("token.json").json<Auth.JWTInput>();
       this.cachedCredentials = google.auth.fromJSON(
         credentials,
       ) as Auth.OAuth2Client;
