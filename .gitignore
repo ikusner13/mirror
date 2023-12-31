@@ -43,3 +43,10 @@ credentials.json
 token.json
 token-ian.json
 spotify.json
+
+# python
+__pycache__/
+venv/
+
+#ts
+*.tsbuildinfo
