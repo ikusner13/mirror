@@ -1,8 +1,4 @@
 /* eslint-disable n/no-process-exit */
-import * as fs from "node:fs";
-import { createServer } from "node:http";
-import * as path from "node:path";
-
 import { env } from "./env";
 import { logger } from "./logger";
 import {
@@ -42,30 +38,37 @@ async function initializeModules(streamManager: StreamManager) {
 }
 
 function configureServer(streamManager: StreamManager) {
-  const server = createServer((req, res) => {
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      `http://localhost:${env.CLIENT_PORT}`,
-    );
+  const server = Bun.serve({
+    fetch(request, _server) {
+      const url = new URL(request.url);
+      const path = url.pathname;
 
-    if (req.url === "/events") {
-      //@ts-expect-error move to bun readable stream, so ignore
-      const stream = createStream(req, res);
-      streamManager.addStream(stream);
-    } else if (req.url === "/") {
-      res.writeHead(200, { "Content-Type": "text/html" });
-      const file = fs.createReadStream(
-        path.join(process.cwd(), "./assets/index.html"),
-      );
+      if (path === "/") {
+        return new Response(Bun.file("./assets/index.html"), {
+          headers: {
+            "Content-Type": "text/html",
+          },
+          status: 200,
+        });
+      } else if (path === "/events") {
+        return new Response(createStream(streamManager), {
+          headers: {
+            "Cache-Control": "no-cache",
+            Connection: "keep-alive",
+            "Content-Type": "text/event-stream",
+          },
+          status: 200,
+        });
+      }
 
-      file.pipe(res);
-    } else {
-      res.writeHead(404);
-      res.end();
-    }
+      return new Response("Not found", {
+        status: 404,
+      });
+    },
+    port: env.API_PORT,
   });
 
-  return server;
+  logger.info(`server is listening on ${server.hostname}:${server.port}`);
 }
 
 export async function initServer() {
@@ -74,7 +77,5 @@ export async function initServer() {
 
     process.exit(1);
   });
-  const server = configureServer(streamManager);
-
-  return server;
+  configureServer(streamManager);
 }
