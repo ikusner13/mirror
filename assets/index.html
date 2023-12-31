@@ -89,6 +89,10 @@
 </script>
 
 <style>
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   :root {
     font-family: "Montserrat", sans-serif;
     line-height: 1.5;
@@ -105,8 +109,10 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
+    overflow: hidden;
     cursor: none;
   }
+
   body {
     margin: 0;
     display: flex;
