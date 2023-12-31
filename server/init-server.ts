@@ -49,6 +49,7 @@ function configureServer(streamManager: StreamManager) {
     );
 
     if (req.url === "/events") {
+      //@ts-expect-error move to bun readable stream, so ignore
       const stream = createStream(req, res);
       streamManager.addStream(stream);
     } else if (req.url === "/") {

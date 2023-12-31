@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "bun build ./server/index.ts --outdir ./build --target bun --external googleapis",
     "clean": "rm -rf dist",
     "dev": "bun --watch ./server/index.ts",
     "generate-message": "bun ./server/modules/message/generate-message.ts",
@@ -16,7 +16,8 @@
     "test:calendar": "bun ./server/scripts/test-google-calendar.ts",
     "test:photos": "bun ./server/scripts/test-google-photos.ts",
     "test:spotify": "bun ./server/scripts/test-spotify.ts",
-    "test:weather": "bun ./server/scripts/test-weather.ts"
+    "test:weather": "bun ./server/scripts/test-weather.ts",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.0",
