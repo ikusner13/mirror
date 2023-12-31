@@ -6,20 +6,13 @@ import { google } from "googleapis";
 import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
-import { html } from "../../utils";
 import { type GoogleCredentialManager } from "../google-auth";
 import { type Module } from "../module";
+import { type CalendarDTO, generateCalendarHTML } from "./template";
 
 dayjs.extend(calendar);
 
 const calendarLogger = logger.child({ module: "calendar" });
-
-type CalendarDTO = {
-  id: string;
-  kind: string;
-  startDateTime: string;
-  summary: string;
-};
 
 export async function listEvents(credentialManager: GoogleCredentialManager) {
   const auth = credentialManager.getCredentials();
@@ -103,26 +96,11 @@ export class GoogleCalendar implements Module {
       return;
     }
 
-    const eventList = events.map((event) => {
-      return html`<div>
-      <div class="flex gap-2 items-center">
-      <i class="ri-calendar-event-line"></i>
-      <p>
-      ${event.summary}
-      </p>
-      </div>
-      <div>
-      <p class="text-sm">
-      ${this.formatCalendarDisplay(event.startDateTime)}
-      </p>
-      </div>
-      </li>`;
+    const html = generateCalendarHTML(events, (eventDate) => {
+      return this.formatCalendarDisplay(eventDate);
     });
 
-    this.streamManager.sendEvent(
-      "calendar",
-      `<div class="flex flex-col gap-4">${eventList.join("")}</div>`,
-    );
+    this.streamManager.sendEvent("calendar", html);
   }
 
   async init() {

@@ -3,9 +3,9 @@ import path from "path";
 
 import { logger } from "../../logger";
 import { type StreamManager } from "../../stream";
-import { html } from "../../utils";
 import { type Module } from "../module";
 import { type CurrentlyPlayingObject, type TrackObject } from "./spotify.api";
+import { type SpotifyDTO, generateSpotifyHTML } from "./template";
 
 const tokenRefreshBase = "https://accounts.spotify.com";
 const userBase = "https://api.spotify.com";
@@ -25,11 +25,6 @@ type RefreshTokenResponse = {
   expires_in: number;
   scope: string;
   token_type: "Bearer";
-};
-
-type SpotifyDTO = {
-  artist: string;
-  song: string;
 };
 
 const spotifyLogger = logger.child({ module: "spotify" });
@@ -217,19 +212,9 @@ export class SpotifyManager implements Module {
   start() {
     spotifyLogger.info("Initializing Spotify module");
     this.getTrackLoop((track) => {
-      const artist = track.artist;
-      const song = track.song;
-      const htmlString = html`<div>
-        <div class="flex flex col place-items-center gap-2">
-          <i class="ri-headphone-line"></i>
-          <span>${song}</span>
-        </div>
-        <div class="flex flex col place-items-center gap-2">
-          <i class="ri-album-line"></i>
-          <span>${artist}</span>
-        </div>
-      </div>`;
-      this.streamManager.sendEvent("spotify", htmlString);
+      const html = generateSpotifyHTML(track);
+
+      this.streamManager.sendEvent("spotify", html);
     });
   }
 }

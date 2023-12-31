@@ -4,9 +4,9 @@ import { env } from "../../env";
 import { logger } from "../../logger";
 import { createCronJob } from "../../scheduler";
 import { type StreamManager } from "../../stream";
-import { html } from "../../utils";
 import { type Module } from "../module";
 import { icons } from "./icon-map";
+import { type WeatherResponse, generateWeatherHTML } from "./template";
 
 const weatherApiKey = env.WEATHER_API_KEY;
 const ZIP = "43201";
@@ -61,13 +61,6 @@ type OpenWeatherResponse = {
   };
 };
 
-type WeatherResponse = {
-  feelsLike?: number;
-  icon: string;
-  temp?: number;
-  weather?: string;
-};
-
 const weatherLogger = logger.child({ module: "weather" });
 
 async function fetchWeatherDetails() {
@@ -114,18 +107,11 @@ export class Weather implements Module {
   async fetchAndSendEvents() {
     const weather = await getWeather();
 
-    const htmlString = html`<div>
-      <div class="flex items-center gap-2 justify-end">
-        <i class=${weather.icon}></i>
-        <span>${Math.round(Number(weather.temp))}&deg;</span>
-      </div>
-      <span class="flex justify-end">${weather.weather}</span>
-      <span class="flex justify-end"
-        >Feels like ${Math.round(Number(weather.feelsLike))}&deg;</span
-      >
-    </div>`;
+    const html = generateWeatherHTML(weather);
 
-    this.streamManager.sendEvent("weather", htmlString);
+    console.log("weather", html);
+
+    this.streamManager.sendEvent("weather", html);
   }
 
   async init() {
