@@ -1,26 +1,22 @@
-// import EventEmitter from "node:events";
-
 import { EventEmitter } from "node:events";
 
 import { logger } from "./logger";
 
 const streamLogger = logger.child({ module: "stream" });
 
-export function createStream(streamManager: StreamManager) {
+//TODO: event listeners on request signals?
+export function createStream(_req: Request) {
   const stream = new ReadableStream({
     cancel(controller: ReadableStreamDefaultController) {
       streamLogger.info("Stream cancelled", controller);
-      streamManager.eventEmitter.removeAllListeners("event");
+      streamManager.removeAllListeners();
       controller.close();
     },
     // pull(controller) {},
     start(controller) {
       streamLogger.info("Stream started");
       streamManager.startup();
-      streamManager.eventEmitter.on("event", ({ data, event }) => {
-        controller.enqueue(`event: ${event}\n`);
-        controller.enqueue(`data: ${data}\n\n`);
-      });
+      streamManager.onEvent(controller);
     },
   });
 
@@ -35,6 +31,17 @@ export class StreamManager {
 
   onConnection(callback: () => Promise<void>) {
     this.onConnectionCallbacks.push(callback);
+  }
+
+  onEvent(controller: ReadableStreamDefaultController) {
+    this.streamEventEmitter.on("event", ({ data, event }) => {
+      controller.enqueue(`event: ${event}\n`);
+      controller.enqueue(`data: ${data}\n\n`);
+    });
+  }
+
+  removeAllListeners() {
+    this.streamEventEmitter.removeAllListeners("event");
   }
 
   sendEvent(event: string, data: string) {

@@ -37,7 +37,7 @@ async function initializeModules(streamManager: StreamManager) {
   weather.start();
 }
 
-function configureServer(streamManager: StreamManager) {
+function configureServer() {
   const server = Bun.serve({
     fetch(request, _server) {
       const url = new URL(request.url);
@@ -51,7 +51,7 @@ function configureServer(streamManager: StreamManager) {
           status: 200,
         });
       } else if (path === "/events") {
-        return new Response(createStream(streamManager), {
+        return new Response(createStream(request), {
           headers: {
             "Cache-Control": "no-cache",
             Connection: "keep-alive",
@@ -77,5 +77,5 @@ export async function initServer() {
 
     process.exit(1);
   });
-  configureServer(streamManager);
+  configureServer();
 }
