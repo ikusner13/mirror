@@ -12,7 +12,7 @@ const config = {
     "plugin:n/recommended",
     "prettier",
   ],
-  ignorePatterns: ["**/.eslintrc.cjs", "dist", "bun.lockb"],
+  ignorePatterns: ["**/.eslintrc.cjs", "dist", "bun.lockb", "build"],
   overrides: [
     {
       files: ["**/*.cjs"],
