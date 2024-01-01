@@ -25,6 +25,7 @@
     "@google-cloud/local-auth": "^3.0.0",
     "cron": "^3.1.6",
     "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
     "electron": "^28.1.0",
     "googleapis": "^129.0.0",
     "pino": "^8.17.1",
