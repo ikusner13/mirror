@@ -12,7 +12,6 @@ module.exports = {
       script: "bun ./build/index.js",
     },
     {
-      args: "./main.mjs",
       env: {
         DISPLAY: ":0",
       },
