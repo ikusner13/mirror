@@ -8,7 +8,7 @@
     "build": "bun build ./server/index.ts --outdir ./build --target bun --external googleapis --format esm",
     "clean": "rm -rf dist",
     "dev": "bun --watch ./server/index.ts",
-    "electron": "electron main.mjs",
+    "electron": "dotenv wait-on http://localhost:$API_PORT/ && electron main.mjs",
     "generate-message": "bun ./server/modules/message/generate-message.ts",
     "google:albumIds": "bun ./server/scripts/fetch-album-ids.ts",
     "google:authorize": "bun ./server/scripts/authorize.ts",
@@ -31,6 +31,7 @@
     "pino": "^8.17.1",
     "preact": "^10.19.3",
     "preact-render-to-string": "^6.3.1",
+    "wait-on": "^7.2.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

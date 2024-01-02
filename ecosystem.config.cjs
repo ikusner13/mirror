@@ -1,7 +1,9 @@
+require("dotenv").config();
+
 module.exports = {
   apps: [
     {
-      cron_restart: "0 0 * * *",
+      // cron_restart: "0 0 * * *",
       env: {
         NODE_ENV: "production",
       },
@@ -16,7 +18,7 @@ module.exports = {
       },
       instances: 1,
       name: "client",
-      script: "./node_modules/.bin/electron",
+      script: "bun run electron",
     },
   ],
 };
