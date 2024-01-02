@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+//TODO: kill process on error
 const envSchema = z.object({
   API_PORT: z
     .preprocess((arg) => parseInt(arg as string, 10), z.number().positive())
