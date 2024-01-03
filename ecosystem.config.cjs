@@ -8,8 +8,9 @@ module.exports = {
         NODE_ENV: "production",
       },
       instances: 1,
+      interpreter: "~/.bun/bin/bun",
       name: "server",
-      script: "bun ./build/index.js",
+      script: "./build/index.js",
     },
     {
       env: {
