@@ -124,7 +124,7 @@ export class GooglePhotos implements Module {
 
         return null;
       });
-    }, `0 */${15} * * * *`);
+    }, `0 0 5-23 * * *`);
   }
 
   async fetchAndSendEvents(): Promise<void> {

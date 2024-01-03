@@ -108,7 +108,7 @@ export class Weather implements Module {
 
         return null;
       });
-    }, `0 */${10} * * * *`);
+    }, `0 * 5-23 * * *`);
   }
 
   async fetchAndSendEvents() {
