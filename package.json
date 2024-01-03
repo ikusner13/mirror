@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "clean": "rm -rf dist",
-    "dev": "NODE_ENV=development dotenv -- nodemon --exec \"node -r esbuild-register ./server/index.ts\" -e .ts",
+    "clean": "rm -rf dist && rm -rf node_modules && pnpm install",
+    "dev": "bun --watch ./server/index.ts",
     "generate-message": "bun run ./server/modules/message/generate-message.ts",
     "google:albumIds": "bun run ./server/scripts/fetch-album-ids.ts",
     "google:authorize": "bun run ./server/scripts/authorize.ts",
@@ -31,6 +31,7 @@
     "pino-pretty": "^10.3.0",
     "prettier": "^2.8.8",
     "prettier-plugin-packagejson": "^2.4.7",
+    "server-destroy": "1.0.1",
     "typescript": "^5.3.3",
     "ws": "^8.15.1",
     "zod": "^3.22.4"
@@ -42,6 +43,7 @@
     "@types/eslint": "^8.56.0",
     "@types/node": "^20.10.5",
     "@types/prettier": "^2.7.3",
+    "@types/server-destroy": "^1.0.3",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",

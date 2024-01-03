@@ -2,6 +2,7 @@
 import * as fs from "node:fs";
 import { createServer } from "node:http";
 import * as path from "node:path";
+import enableDestroy from "server-destroy";
 
 import { env } from "./env";
 import { logger } from "./logger";
@@ -63,6 +64,8 @@ function configureServer(streamManager: StreamManager) {
       res.end();
     }
   });
+
+  enableDestroy(server);
 
   return server;
 }

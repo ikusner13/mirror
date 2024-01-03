@@ -47,6 +47,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.4.7
         version: 2.4.7(prettier@2.8.8)
+      server-destroy:
+        specifier: 1.0.1
+        version: 1.0.1
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -75,6 +78,9 @@ importers:
       '@types/prettier':
         specifier: ^2.7.3
         version: 2.7.3
+      '@types/server-destroy':
+        specifier: ^1.0.3
+        version: 1.0.3
       '@types/ws':
         specifier: ^8.5.10
         version: 8.5.10
@@ -909,6 +915,12 @@ packages:
 
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
+    dev: true
+
+  /@types/server-destroy@1.0.3:
+    resolution: {integrity: sha512-Qq0fn70C7TLDG1W9FCblKufNWW1OckQ41dVKV2Dku5KdZF7bexezG4e2WBaBKhdwL3HZ+cYCEIKwg2BRgzrWmA==}
+    dependencies:
+      '@types/node': 20.10.5
     dev: true
 
   /@types/ws@8.5.10:

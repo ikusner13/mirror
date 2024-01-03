@@ -57,6 +57,7 @@ export class StreamManager {
   }
 
   closeAllStreams() {
+    streamLogger.info("Closing all streams");
     this.streams.forEach((stream) => {
       stream.destroy();
     });
@@ -76,21 +77,3 @@ export class StreamManager {
 }
 
 export const streamManager = new StreamManager();
-
-process.on("uncaughtException", (error) => {
-  streamLogger.error(error);
-});
-
-process.on("unhandledRejection", (reason) => {
-  streamLogger.error(reason);
-});
-
-process.on("SIGTERM", () => {
-  streamLogger.info("SIGTERM");
-  streamManager.closeAllStreams();
-});
-
-process.on("SIGINT", () => {
-  streamLogger.info("SIGINT");
-  streamManager.closeAllStreams();
-});

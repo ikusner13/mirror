@@ -2,6 +2,7 @@
 import { env } from "./env";
 import { initServer } from "./init-server";
 import { logger } from "./logger";
+import { streamManager } from "./stream";
 
 initServer()
   .then((server) => {
@@ -10,7 +11,8 @@ initServer()
     });
 
     process.on("SIGTERM", () => {
-      server.close((error) => {
+      server.destroy((error) => {
+        streamManager.closeAllStreams();
         if (error) {
           logger.error("SIGTERM", error);
           process.exit(1);
@@ -22,7 +24,8 @@ initServer()
     });
 
     process.on("SIGINT", () => {
-      server.close((error) => {
+      streamManager.closeAllStreams();
+      server.destroy((error) => {
         if (error) {
           logger.error("SIGINT", error);
           process.exit(1);
