@@ -28,7 +28,7 @@
         class="top-left object-contain w-full h-[300px]"
       ></div>
       <div class="top-center flex flex-col place-items-center">
-        <p id="time"></p>
+        <p id="time"><span id="time-value"></span> <span id="ampm"></span></p>
         <p id="date"></p>
       </div>
       <div class="top-right">test message</div>
@@ -50,9 +50,11 @@
     const minutes = today.getMinutes();
     const seconds = today.getSeconds();
 
-    const hour = hours < 10 ? "0" + hours : hours;
-    const minute = minutes < 10 ? "0" + minutes : minutes;
-    const second = seconds < 10 ? "0" + seconds : seconds;
+    const hour12 = hours % 12 || 12;
+
+    const hour = hour12.toString();
+    const minute = minutes < 10 ? "0" + minutes : minutes.toString();
+    const second = seconds < 10 ? "0" + seconds : seconds.toString();
 
     const hourTime = hour > 12 ? hour - 12 : hour;
 
@@ -78,9 +80,11 @@
     ];
 
     const date = `${monthList[month]} ${day}, ${year}`;
-    const time = `${hourTime}:${minute}:${second} ${ampm}`;
+    const time = `${hourTime}:${minute}:${second}`;
+    const ampmText = `${ampm}`;
 
-    document.getElementById("time").innerHTML = time;
+    document.getElementById("time-value").innerHTML = time;
+    document.getElementById("ampm").innerHTML = ampmText;
     document.getElementById("date").innerHTML = date;
     setTimeout(clock, 1000);
   }
