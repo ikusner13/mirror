@@ -20,7 +20,7 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["es2022"],
     "module": "ESNext",
-    "target": "es2022",
+    "target": "ESNext",
     "isolatedModules": true,
     "resolveJsonModule": true,
     "incremental": true,

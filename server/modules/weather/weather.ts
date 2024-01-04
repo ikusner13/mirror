@@ -119,10 +119,10 @@ export class Weather implements Module {
         <i class=${weather.icon}></i>
         <span>${Math.round(Number(weather.temp))}&deg;</span>
       </div>
-      <span class="flex justify-end">${weather.weather}</span>
-      <span class="flex justify-end"
-        >Feels like ${Math.round(Number(weather.feelsLike))}&deg;</span
-      >
+      <span class="flex justify-end"> ${weather.weather} </span>
+      <span class="flex justify-end">
+        Feels like ${Math.round(Number(weather.feelsLike))}&deg;
+      </span>
     </div>`;
 
     this.streamManager.sendEvent("weather", htmlString);

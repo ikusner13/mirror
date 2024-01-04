@@ -1,26 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, app, screen } from "electron";
 import { URL } from "url";
 import { startServer } from "./dist/start-server.js";
 
+app.disableHardwareAcceleration();
+
 const createWindow = () => {
-  let mainWindow = new BrowserWindow({
+  const size = screen.getPrimaryDisplay().workAreaSize;
+  const mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
     backgroundColor: "#000000",
     darkTheme: true,
     fullscreen: true,
-    height: 600,
+    height: size.height,
     webPreferences: {
       nodeIntegration: false,
     },
-    width: 800,
+    width: size.width,
     x: 0,
     y: 0,
-  });
-
-  mainWindow.on("closed", function () {
-    mainWindow = null;
   });
 
   //mainWindow.webContents.openDevTools()
