@@ -76,7 +76,34 @@ export async function initServer() {
 
     process.exit(1);
   });
+
   const server = configureServer(streamManager);
+
+  process.on("SIGTERM", () => {
+    server.destroy((error) => {
+      streamManager.closeAllStreams();
+      if (error) {
+        logger.error("SIGTERM", error);
+        process.exit(1);
+      }
+
+      logger.info("server closed");
+      process.exit(0);
+    });
+  });
+
+  process.on("SIGINT", () => {
+    streamManager.closeAllStreams();
+    server.destroy((error) => {
+      if (error) {
+        logger.error("SIGINT", error);
+        process.exit(1);
+      }
+
+      logger.info("server closed");
+      process.exit(0);
+    });
+  });
 
   return server;
 }

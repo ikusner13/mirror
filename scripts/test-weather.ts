@@ -1,5 +1,5 @@
-import { logger } from "../logger";
-import { getWeather } from "../modules/weather/weather";
+import { logger } from "../server/logger";
+import { getWeather } from "../server/modules/weather/weather";
 
 getWeather()
   .then((weather) => {

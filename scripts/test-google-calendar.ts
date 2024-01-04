@@ -1,6 +1,6 @@
-import { logger } from "../logger";
-import { GoogleCredentialManager } from "../modules/google-auth";
-import { listEvents } from "../modules/google-calendar/google-calendar";
+import { logger } from "../server/logger";
+import { GoogleCredentialManager } from "../server/modules/google-auth";
+import { listEvents } from "../server/modules/google-calendar/google-calendar";
 
 async function test() {
   const googleCredentialManager = new GoogleCredentialManager();

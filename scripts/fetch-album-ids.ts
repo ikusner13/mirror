@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 
-import { logger } from "../logger";
-import { GoogleCredentialManager } from "../modules/google-auth";
+import { logger } from "../server/logger";
+import { GoogleCredentialManager } from "../server/modules/google-auth";
 
 export async function fetchAlbumIds() {
   const googleCredentialManager = new GoogleCredentialManager();
