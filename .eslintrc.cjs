@@ -5,7 +5,6 @@ const config = {
     node: true,
   },
   extends: [
-    "turbo",
     "eslint:recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
@@ -15,9 +14,11 @@ const config = {
   ],
   ignorePatterns: [
     "**/.eslintrc.cjs",
-    "packages/config/**",
     "dist",
     "pnpm-lock.yaml",
+    "node_modules",
+    "fixed-spotify-open-api.yml",
+    "spotify.api.ts",
   ],
   overrides: [
     {

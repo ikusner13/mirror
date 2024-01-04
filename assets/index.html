@@ -52,7 +52,7 @@
 
     const hour12 = hours % 12 || 12;
 
-    const hour = hour12.toString();
+    const hour = hour12 < 10 ? "\u00A0" + hour12 : hour12.toString();
     const minute = minutes < 10 ? "0" + minutes : minutes.toString();
     const second = seconds < 10 ? "0" + seconds : seconds.toString();
 

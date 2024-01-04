@@ -29,7 +29,6 @@
     "pino": "^8.17.1",
     "pino-pretty": "^10.3.0",
     "prettier": "^2.8.8",
-    "prettier-plugin-packagejson": "^2.4.7",
     "server-destroy": "1.0.1",
     "typescript": "^5.3.3",
     "zod": "^3.22.4"
@@ -47,6 +46,7 @@
     "eslint-plugin-n": "^16.5.0",
     "eslint-plugin-perfectionist": "^2.5.0",
     "oazapfts": "^4.12.0",
+    "prettier-plugin-packagejson": "^2.4.7",
     "typescript": "^5.3.3"
   },
   "packageManager": "pnpm@8.6.9",

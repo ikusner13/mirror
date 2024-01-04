@@ -93,6 +93,22 @@ export class GoogleCalendar implements Module {
     });
   }
 
+  private getIconForEvent(event: CalendarDTO) {
+    if (
+      event.summary.toLowerCase().includes("birthday") ||
+      event.kind === "calendar#birthday" ||
+      event.summary.toLowerCase().includes("bday")
+    ) {
+      return "ri-cake-2-line";
+    }
+
+    if (event.summary.toLowerCase().includes("anniversary")) {
+      return "ri-hearts-line";
+    }
+
+    return "ri-calendar-event-line";
+  }
+
   async fetchAndSendEvents() {
     const events = await listEvents(this.credentialManager);
 
@@ -106,7 +122,7 @@ export class GoogleCalendar implements Module {
     const eventList = events.map((event) => {
       return html`<div>
         <div class="flex gap-2 items-center">
-          <i class="ri-calendar-event-line"></i>
+          <i class=${this.getIconForEvent(event)}></i>
           <p>${event.summary}</p>
         </div>
         <div>
