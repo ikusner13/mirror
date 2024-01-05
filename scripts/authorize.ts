@@ -1,6 +1,4 @@
-/* eslint-disable n/no-extraneous-import */
 import { authenticate } from "@google-cloud/local-auth";
-import "@total-typescript/ts-reset";
 import fs from "fs/promises";
 import { type Auth, google } from "googleapis";
 import path from "path";

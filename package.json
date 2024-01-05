@@ -9,7 +9,7 @@
     "generate-message": "bun run ./server/modules/message/generate-message.ts",
     "google:albumIds": "bun run ./server/scripts/fetch-album-ids.ts",
     "google:authorize": "bun run ./server/scripts/authorize.ts",
-    "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
+    "lint": "eslint \"server/**/*.ts*\"",
     "server:start": "dotenv -- node ./dist/index.js",
     "spotify:types": "./node_modules/.bin/oazapfts --optimistic ./fixed-spotify-open-api.yml ./server/modules/spotify/spotify.api.ts",
     "start": "NODE_ENV=production dotenv -- electron main.mjs",

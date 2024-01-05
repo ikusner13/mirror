@@ -81,7 +81,7 @@ export class GoogleCalendar implements Module {
 
         return null;
       });
-    }, `0 */${5} 5-23 * * *`);
+    }, `0 */5 5-23 * * *`);
   }
 
   private formatCalendarDisplay(date: Date | string) {
