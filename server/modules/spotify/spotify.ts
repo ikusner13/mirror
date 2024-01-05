@@ -37,6 +37,7 @@ const spotifyLogger = logger.child({ module: "spotify" });
 export class SpotifyManager implements Module {
   private cachedCredentials: SpotifyCredentials | null = null;
   private fetchDelay = 3000;
+  private isPlaying = false;
 
   constructor(private streamManager: StreamManager) {
     this.streamManager.onConnection(() => this.fetchAndSendEvents());
@@ -136,7 +137,14 @@ export class SpotifyManager implements Module {
   getTrackLoop(onSuccessCB: (track: SpotifyDTO) => void) {
     this.getMyPlayingTrack()
       .then((track) => {
-        if (track) {
+        if (!track && this.isPlaying) {
+          this.isPlaying = false;
+          this.streamManager.sendEvent("spotify", `<span></span>`);
+        } else if (track) {
+          if (!this.isPlaying) {
+            this.isPlaying = true;
+          }
+
           onSuccessCB(track);
         }
       })
