@@ -50,3 +50,6 @@ venv/
 
 #ts
 *.tsbuildinfo
+
+# messages
+messages-*.json
