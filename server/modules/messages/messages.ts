@@ -20,7 +20,7 @@ export class Messages implements Module {
 
         return null;
       });
-    }, `0 * 5-23 * * *`);
+    }, `0 0 5,14,16,20 * * *`);
   }
 
   private getRandomMessage(messages: string[]) {
@@ -33,12 +33,12 @@ export class Messages implements Module {
 
     let messages: string[];
 
-    if (hour === 5) {
+    if (hour >= 5 && hour < 12) {
       messagesLogger.info("sending morning message");
       const morningJson = await import("../../../messages-morning.json");
 
       messages = morningJson.messages;
-    } else if (hour == 23) {
+    } else if (hour >= 20 || hour < 5) {
       messagesLogger.info("sending night message");
 
       const nightJson = await import("../../../messages-evening.json");

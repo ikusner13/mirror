@@ -3,7 +3,7 @@
 import { BrowserWindow, app, screen } from "electron";
 import { URL } from "url";
 
-import { startServer } from "./dist/start-server.js";
+import { startServer } from "./dist/server/start-server.js";
 
 app.disableHardwareAcceleration();
 

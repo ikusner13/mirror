@@ -9,6 +9,7 @@ import { logger } from "./logger";
 import {
   GoogleCalendar,
   GooglePhotos,
+  Messages,
   SpotifyManager,
   Weather,
 } from "./modules";
@@ -26,6 +27,7 @@ async function initializeModules(streamManager: StreamManager) {
   const googlePhotos = new GooglePhotos(streamManager, googleCredentialManager);
   const spotify = new SpotifyManager(streamManager);
   const weather = new Weather(streamManager);
+  const messages = new Messages(streamManager);
 
   // call init on modules
   await googleCredentialManager.init();
@@ -34,12 +36,13 @@ async function initializeModules(streamManager: StreamManager) {
   await googleCalendar.init();
   await googlePhotos.init();
   await weather.init();
-
+  await messages.init();
   // start modules
   googleCalendar.start();
   googlePhotos.start();
   spotify.start();
   weather.start();
+  messages.start();
 }
 
 function configureServer(streamManager: StreamManager) {
