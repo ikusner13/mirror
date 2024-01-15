@@ -35,7 +35,7 @@
       <div class="bottom-left" hx-sse="swap:calendar"></div>
       <div
         hx-sse="swap:spotify"
-        class="bottom-center flex flex-col place-items-center text-center"
+        class="bottom-center flex flex-col items-start justify-center text-center min-w-0"
       ></div>
       <div class="bottom-right" hx-sse="swap:weather"></div>
     </div>
@@ -170,44 +170,29 @@
   }
 
   .marquee {
-    margin: 0 auto;
-    white-space: nowrap;
     overflow: hidden;
-    position: absolute;
-    max-width: 30ch;
+    white-space: nowrap;
+    box-sizing: border-box;
+    width: 100%; /* Set to your container width */
   }
 
-  .marquee span.move {
+  .marquee span {
     display: inline-block;
-    animation: marquee 20s linear infinite;
-  }
-
-  .marquee2 span.move {
-    display: inline-block;
-    animation: marquee2 20s linear infinite;
-  }
-
-  @keyframes marquee2 {
-    0%,
-    10% {
-      transform: translate(110%, 0);
-    }
-
-    90%,
-    100% {
-      transform: translate(0, 0);
-    }
+    /* Start off the screen, then animate in */
+    animation: marquee 12s linear infinite;
   }
 
   @keyframes marquee {
     0%,
-    10% {
-      transform: translate(0, 0);
-    }
-
-    90%,
     100% {
-      transform: translate(-110%, 0);
+      transform: translateX(100%);
+    }
+    10%,
+    90% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
     }
   }
 </style>
