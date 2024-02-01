@@ -20,7 +20,7 @@ export class Messages implements Module {
 
         return null;
       });
-    }, `0 0 5,14,16,20 * * *`);
+    }, `0 0 5,11,16,20 * * *`);
   }
 
   private getRandomMessage(messages: string[]) {

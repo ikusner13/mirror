@@ -31,7 +31,7 @@
         <p id="time"><span id="time-value"></span> <span id="ampm"></span></p>
         <p id="date"></p>
       </div>
-      <div class="top-right text-pretty" hx-sse="swap:message"></div>
+      <div class="top-right text-pretty text-right" hx-sse="swap:message"></div>
       <div class="bottom-left" hx-sse="swap:calendar"></div>
       <div
         hx-sse="swap:spotify"
@@ -168,29 +168,27 @@
     grid-row: 3;
     align-self: end;
   }
-
   .marquee {
     overflow: hidden;
     white-space: nowrap;
-    box-sizing: border-box;
+    /* text-overflow: ellipsis; */
+    /* box-sizing: border-box; */
     width: 100%; /* Set to your container width */
+    display: flex;
   }
 
   .marquee span {
-    display: inline-block;
-    /* Start off the screen, then animate in */
-    animation: marquee 12s linear infinite;
+    flex: none;
+    animation: marquee 15s linear infinite;
+    margin-right: 20px;
   }
 
   @keyframes marquee {
     0%,
-    100% {
-      transform: translateX(100%);
-    }
-    10%,
-    90% {
+    20% {
       transform: translateX(0%);
     }
+    50%,
     100% {
       transform: translateX(-100%);
     }
