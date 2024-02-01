@@ -7,16 +7,16 @@
     "clean": "rm -rf dist && rm -rf node_modules && pnpm install",
     "dev": "bun --watch ./server/index.ts",
     "generate-message": "bun run ./server/modules/message/generate-message.ts",
-    "google:albumIds": "bun run ./server/scripts/fetch-album-ids.ts",
-    "google:authorize": "bun run ./server/scripts/authorize.ts",
+    "google:albumIds": "bun run ./scripts/fetch-album-ids.ts",
+    "google:authorize": "bun run ./scripts/authorize.ts",
     "lint": "eslint \"server/**/*.ts*\"",
     "server:start": "dotenv -- node ./dist/index.js",
     "spotify:types": "./node_modules/.bin/oazapfts --optimistic ./fixed-spotify-open-api.yml ./server/modules/spotify/spotify.api.ts",
     "start": "NODE_ENV=production dotenv -- electron main.mjs",
     "test:calendar": "bun run ./scripts/test-google-calendar.ts",
-    "test:photos": "bun run ./server/scripts/test-google-photos.ts",
-    "test:spotify": "bun run ./server/scripts/test-spotify.ts",
-    "test:weather": "bun run ./server/scripts/test-weather.ts"
+    "test:photos": "bun run ./scripts/test-google-photos.ts",
+    "test:spotify": "bun run ./scripts/test-spotify.ts",
+    "test:weather": "bun run ./scripts/test-weather.ts"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.0",
