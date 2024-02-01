@@ -13,7 +13,7 @@
     "server:start": "dotenv -- node ./dist/index.js",
     "spotify:types": "./node_modules/.bin/oazapfts --optimistic ./fixed-spotify-open-api.yml ./server/modules/spotify/spotify.api.ts",
     "start": "NODE_ENV=production dotenv -- electron main.mjs",
-    "test:calendar": "bun run ./server/scripts/test-google-calendar.ts",
+    "test:calendar": "bun run ./scripts/test-google-calendar.ts",
     "test:photos": "bun run ./server/scripts/test-google-photos.ts",
     "test:spotify": "bun run ./server/scripts/test-spotify.ts",
     "test:weather": "bun run ./server/scripts/test-weather.ts"

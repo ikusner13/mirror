@@ -28,7 +28,7 @@ export async function listEvents(credentialManager: GoogleCredentialManager) {
 
   try {
     const res = await calendar.events.list({
-      calendarId: "primary",
+      calendarId: "mik843la48t8tn71pc6nhk1jag@group.calendar.google.com",
       maxResults: 10,
       orderBy: "startTime",
       singleEvents: true,
