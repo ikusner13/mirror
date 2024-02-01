@@ -115,7 +115,7 @@ export class GoogleCalendar implements Module {
     calendarLogger.info("Sending calendar events to clients", events);
 
     if (events.length === 0) {
-      this.streamManager.sendEvent("calendar", "No events found");
+      this.streamManager.sendEvent("calendar", "No upcoming events");
       return;
     }
 
