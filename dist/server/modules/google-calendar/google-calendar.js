@@ -17,7 +17,7 @@ async function listEvents(credentialManager) {
     const calendar = googleapis_1.google.calendar({ auth, version: "v3" });
     try {
         const res = await calendar.events.list({
-            calendarId: "primary",
+            calendarId: "mik843la48t8tn71pc6nhk1jag@group.calendar.google.com",
             maxResults: 10,
             orderBy: "startTime",
             singleEvents: true,
@@ -87,7 +87,7 @@ class GoogleCalendar {
         const events = await listEvents(this.credentialManager);
         calendarLogger.info("Sending calendar events to clients", events);
         if (events.length === 0) {
-            this.streamManager.sendEvent("calendar", "No events found");
+            this.streamManager.sendEvent("calendar", "No upcoming events");
             return;
         }
         const eventList = events.map((event) => {

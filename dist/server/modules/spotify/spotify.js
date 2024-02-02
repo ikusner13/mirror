@@ -173,13 +173,17 @@ class SpotifyManager {
             const artist = track.artist;
             const song = track.song;
             const htmlString = (0, utils_1.html) `<div>
-        <div class="flex flex col place-items-center gap-2">
+        <div class="flex flex col place-items-center gap-2 w-full">
           <i class="ri-headphone-line"></i>
-          <span>${song}</span>
+          <div class="truncate">
+            <span>${song}</span>
+          </div>
         </div>
-        <div class="flex flex col place-items-center gap-2">
+        <div class="flex flex col place-items-center gap-2 w-full">
           <i class="ri-album-line"></i>
-          <span>${artist}</span>
+          <div class="truncate">
+            <span>${artist}</span>
+          </div>
         </div>
       </div>`;
             this.streamManager.sendEvent("spotify", htmlString);

@@ -40,7 +40,7 @@ class Messages {
                 messagesLogger.error(err);
                 return null;
             });
-        }, `0 0 5,14,16,20 * * *`);
+        }, `0 0 5,11,16,20 * * *`);
     }
     getRandomMessage(messages) {
         const index = Math.floor(Math.random() * messages.length);
