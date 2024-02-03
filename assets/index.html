@@ -22,7 +22,6 @@
     />
   </head>
   <body>
-    <span id="screen-width"></span>
     <div hx-sse="connect:/events" class="main">
       <div
         hx-sse="swap:photo"
@@ -90,17 +89,7 @@
     setTimeout(clock, 1000);
   }
 
-  function getScreenSize() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    const screenWidthElement = document.getElementById("screen-width");
-
-    screenWidthElement.innerHTML = `Screen Width: ${width} x ${height}`;
-  }
-
   clock();
-  getScreenSize();
 </script>
 
 <style>
