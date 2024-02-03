@@ -32,12 +32,12 @@
         <p id="date"></p>
       </div>
       <div class="top-right text-pretty text-right" hx-sse="swap:message"></div>
-      <div class="bottom-left" hx-sse="swap:calendar"></div>
+      <div class="bottom-left text-sm" hx-sse="swap:calendar"></div>
       <div
         hx-sse="swap:spotify"
-        class="bottom-center flex flex-col items-start justify-center text-center min-w-0"
+        class="bottom-center flex flex-col items-start justify-center text-center min-w-0 text-[0.85rem]"
       ></div>
-      <div class="bottom-right" hx-sse="swap:weather"></div>
+      <div class="bottom-right text-[0.85rem]" hx-sse="swap:weather"></div>
     </div>
   </body>
 </html>
@@ -100,6 +100,7 @@
   :root {
     font-family: "Montserrat", sans-serif;
     line-height: 1.5;
+    font-size: 2em;
     font-weight: 400;
 
     color-scheme: dark;
