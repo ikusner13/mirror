@@ -34,7 +34,7 @@ async function listEvents(credentialManager) {
             return {
                 id: event.id,
                 kind: event.kind,
-                startDateTime: event.start?.dateTime,
+                startDateTime: event.start?.dateTime ?? event.start?.date,
                 summary: event.summary,
             };
         })
@@ -66,9 +66,9 @@ class GoogleCalendar {
     }
     formatCalendarDisplay(date) {
         return (0, dayjs_1.default)(date).calendar(null, {
-            nextDay: "[Tomorrow at] HH:mm A",
+            nextDay: "[Tomorrow at] h:mm A",
             nextWeek: "dddd",
-            sameDay: "[Today at] HH:mm A",
+            sameDay: "[Today at] h:mm A",
             sameElse: "MM/DD/YYYY",
         });
     }

@@ -52,7 +52,7 @@ export async function listEvents(credentialManager: GoogleCredentialManager) {
         return {
           id: event.id,
           kind: event.kind,
-          startDateTime: event.start?.dateTime,
+          startDateTime: event.start?.dateTime ?? event.start?.date,
           summary: event.summary,
         };
       })
@@ -86,9 +86,9 @@ export class GoogleCalendar implements Module {
 
   private formatCalendarDisplay(date: Date | string) {
     return dayjs(date).calendar(null, {
-      nextDay: "[Tomorrow at] HH:mm A",
+      nextDay: "[Tomorrow at] h:mm A",
       nextWeek: "dddd",
-      sameDay: "[Today at] HH:mm A",
+      sameDay: "[Today at] h:mm A",
       sameElse: "MM/DD/YYYY",
     });
   }
