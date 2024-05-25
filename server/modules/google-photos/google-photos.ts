@@ -27,7 +27,7 @@ const photoLogger = logger.child({ module: "photos" });
  * @link https://developers.google.com/photos/library/guides/apply-filters?hl=en&authuser=1
  */
 const albumId =
-  "AKcvZRwngYxfEg0WthniYt7tZG4BW3m5JKYYQGWUu7XNlFmTDcgqGqeK36lh1fF_AuOUTk01MAjc";
+  "AKcvZRw9w3qSa3nDLqO4t--2MlRAWjfUPF_6-dlIx7Tx9duEAPIIaOCNO6FF8RnyePjc3HmnbAj5";
 
 async function getPhotos(credentialManager: GoogleCredentialManager) {
   const token = await credentialManager.getAccessToken();

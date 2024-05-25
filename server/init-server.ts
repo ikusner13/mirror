@@ -1,7 +1,6 @@
 /* eslint-disable n/no-process-exit */
 import * as fs from "node:fs";
-import { createServer } from "node:http";
-import * as path from "node:path";
+import { type ServerResponse, createServer } from "node:http";
 import enableDestroy from "server-destroy";
 
 import { env } from "./env";
@@ -45,6 +44,20 @@ async function initializeModules(streamManager: StreamManager) {
   messages.start();
 }
 
+function serveFile(res: ServerResponse, filePath: string, contentType: string) {
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+
+    res.writeHead(200, { "Content-Type": contentType });
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+}
+
 function configureServer(streamManager: StreamManager) {
   const server = createServer((req, res) => {
     res.setHeader(
@@ -56,12 +69,13 @@ function configureServer(streamManager: StreamManager) {
       const stream = createStream(req, res);
       streamManager.addStream(stream);
     } else if (req.url === "/") {
-      res.writeHead(200, { "Content-Type": "text/html" });
-      const file = fs.createReadStream(
-        path.join(process.cwd(), "./assets/index.html"),
-      );
-
-      file.pipe(res);
+      serveFile(res, "./assets/index.html", "text/html");
+    } else if (req.url?.endsWith(".woff")) {
+      serveFile(res, `./assets${req.url}`, "font/woff");
+    } else if (req.url?.endsWith(".ttf")) {
+      serveFile(res, `./assets${req.url}`, "font/ttf");
+    } else if (req.url?.endsWith(".css")) {
+      serveFile(res, `./assets${req.url}`, "text/css");
     } else {
       res.writeHead(404);
       res.end();

@@ -27,17 +27,16 @@
         hx-sse="swap:photo"
         class="top-left object-contain w-full h-[300px]"
       ></div>
-      <div class="top-center flex flex-col place-items-center">
+      <div
+        hx-sse="swap:photo"
+        class="top-right object-contain w-full h-[300px]"
+      ></div>
+      <div class="top-center flex flex-col place-items-center text-2xl">
         <p id="time"><span id="time-value"></span> <span id="ampm"></span></p>
         <p id="date"></p>
       </div>
-      <div class="top-right text-pretty text-right" hx-sse="swap:message"></div>
-      <div class="bottom-left text-sm" hx-sse="swap:calendar"></div>
-      <div
-        hx-sse="swap:spotify"
-        class="bottom-center flex flex-col items-start justify-center text-center min-w-0 text-[0.85rem]"
-      ></div>
-      <div class="bottom-right text-[0.85rem]" hx-sse="swap:weather"></div>
+      <div class="center text-4xl text-nowrap" hx-sse="swap:calendar"></div>
+      <h1 class="bottom-center text-6xl text-nowrap">Meg's Bachelorette</h1>
     </div>
   </body>
 </html>
@@ -93,12 +92,19 @@
 </script>
 
 <style>
+  @font-face {
+    font-family: "Bachelorette";
+    src: url("Bachelorette.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   ::-webkit-scrollbar {
     display: none;
   }
 
   :root {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Bachelorette", cursive;
     line-height: 1.5;
     font-size: 2em;
     font-weight: 400;
@@ -130,7 +136,7 @@
     grid-template-rows: auto 1fr auto; /* Three rows */
     gap: 1rem;
     width: 100%;
-    padding: 2rem;
+    padding: 1rem;
   }
 
   .top-center {
@@ -141,7 +147,7 @@
   .bottom-left {
     grid-column: 1 / 2; /* Bottom left */
     grid-row: 3;
-    justify-self: start;
+    justify-self: end;
     align-self: end;
   }
 
@@ -161,12 +167,20 @@
   .top-right {
     grid-column: 3 / 4; /* Top right */
     grid-row: 1;
+    justify-self: end;
   }
 
   .bottom-center {
-    grid-column: 2 / 3; /* Center bottom */
-    grid-row: 3;
-    align-self: end;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .marquee {
     overflow: hidden;

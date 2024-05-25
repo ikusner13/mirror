@@ -18,7 +18,8 @@ export async function fetchAlbumIds() {
   );
   const albums = await albumResponse.json();
 
-  logger.info("your albums are: ", albums);
+  // eslint-disable-next-line no-console
+  console.log(JSON.stringify(albums, null, 2));
 }
 
 fetchAlbumIds().catch((err) => {

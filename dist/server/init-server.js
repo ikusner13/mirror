@@ -30,7 +30,6 @@ exports.initServer = void 0;
 /* eslint-disable n/no-process-exit */
 const fs = __importStar(require("node:fs"));
 const node_http_1 = require("node:http");
-const path = __importStar(require("node:path"));
 const server_destroy_1 = __importDefault(require("server-destroy"));
 const env_1 = require("./env");
 const logger_1 = require("./logger");
@@ -59,6 +58,18 @@ async function initializeModules(streamManager) {
     weather.start();
     messages.start();
 }
+function serveFile(res, filePath, contentType) {
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            res.writeHead(404);
+            res.end();
+            return;
+        }
+        res.writeHead(200, { "Content-Type": contentType });
+        const fileStream = fs.createReadStream(filePath);
+        fileStream.pipe(res);
+    });
+}
 function configureServer(streamManager) {
     const server = (0, node_http_1.createServer)((req, res) => {
         res.setHeader("Access-Control-Allow-Origin", `http://localhost:${env_1.env.CLIENT_PORT}`);
@@ -67,9 +78,16 @@ function configureServer(streamManager) {
             streamManager.addStream(stream);
         }
         else if (req.url === "/") {
-            res.writeHead(200, { "Content-Type": "text/html" });
-            const file = fs.createReadStream(path.join(process.cwd(), "./assets/index.html"));
-            file.pipe(res);
+            serveFile(res, "./assets/index.html", "text/html");
+        }
+        else if (req.url?.endsWith(".woff")) {
+            serveFile(res, `./assets${req.url}`, "font/woff");
+        }
+        else if (req.url?.endsWith(".ttf")) {
+            serveFile(res, `./assets${req.url}`, "font/ttf");
+        }
+        else if (req.url?.endsWith(".css")) {
+            serveFile(res, `./assets${req.url}`, "text/css");
         }
         else {
             res.writeHead(404);
