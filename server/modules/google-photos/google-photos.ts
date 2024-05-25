@@ -128,14 +128,19 @@ export class GooglePhotos implements Module {
   }
 
   async fetchAndSendEvents(): Promise<void> {
-    const photo = await getPhoto(this.credentialManager);
+    // const photo = await getPhoto(this.credentialManager);
+    const photos = await getPhotos(this.credentialManager);
 
-    if (!photo) {
-      return;
+    const randomPhoto1 = getRandomPhoto(photos);
+    let randomPhoto2 = getRandomPhoto(photos);
+
+    while (randomPhoto1 === randomPhoto2) {
+      randomPhoto2 = getRandomPhoto(photos);
     }
 
-    photoLogger.info("Sending photo to clients", photo);
-    this.streamManager.sendEvent("photo", `<img src=${photo} />`);
+    // photoLogger.info("Sending photo to clients", photo);
+    this.streamManager.sendEvent("photo1", `<img src=${randomPhoto1} />`);
+    this.streamManager.sendEvent("photo2", `<img src=${randomPhoto2} />`);
   }
 
   async init() {
